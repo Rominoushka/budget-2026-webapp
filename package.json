@@ -1,0 +1,10 @@
+{
+  "name": "budget-2026-webapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Application web statique de simulation budgétaire familiale.",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server 8080"
+  }
+}

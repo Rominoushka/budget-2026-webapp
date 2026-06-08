@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Budget 2026 - Web App</title>
+<meta name="theme-color" content="#1f4e79">
+<meta name="description" content="Application web de simulation budgétaire familiale avec calculs, graphiques et sauvegarde locale.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+:root {
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --line:#d7dfeb;
+  --blue:#1f4e79;
+  --blue-soft:#e8f1fb;
+  --indigo:#4757c7;
+  --green:#117a65;
+  --green-soft:#eafaf5;
+  --red:#b42318;
+  --red-soft:#fef0ef;
+  --orange:#b76e00;
+  --orange-soft:#fff5e5;
+  --purple:#6e56cf;
+  --purple-soft:#f3efff;
+  --teal:#0f766e;
+  --teal-soft:#ecfdf9;
+  --pink:#c11574;
+  --pink-soft:#fdf2fa;
+  --shadow:0 8px 22px rgba(16,24,40,.06);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; font-family: Inter, Arial, Helvetica, sans-serif;
+  background:linear-gradient(180deg,#eef3f9 0,#f8fbff 180px,#f4f7fb 100%);
+  color:var(--text);
+}
+header {
+  padding:30px 34px 22px;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,.10), transparent 35%),
+    linear-gradient(135deg,#14324d,#1f4e79 55%,#2f80c0 100%);
+  color:white;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+header .title-row {
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+}
+header h1 { margin:0 0 6px; font-size:28px; letter-spacing:.2px; }
+header p { margin:0; color:#d8e8f7; font-size:14px; max-width:920px; }
+header .hero-badges {
+  display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;
+}
+.hero-chip {
+  background:rgba(255,255,255,.13);
+  color:white; border:1px solid rgba(255,255,255,.18);
+  padding:8px 10px; border-radius:999px; font-size:12px; font-weight:700;
+  backdrop-filter: blur(4px);
+}
+.install-btn { cursor:pointer; box-shadow:none; }
+.install-btn:hover { transform:none; }
+main { padding:22px 28px 48px; max-width:1560px; margin:auto; }
+.grid {
+  display:grid; grid-template-columns: repeat(4, minmax(210px,1fr)); gap:14px; margin-bottom:18px;
+}
+.card {
+  background:var(--card); border:1px solid var(--line); border-radius:18px; padding:16px;
+  box-shadow:var(--shadow);
+}
+.kpi {
+  position:relative; overflow:hidden;
+}
+.kpi::before {
+  content:""; position:absolute; left:0; top:0; bottom:0; width:6px; border-radius:18px 0 0 18px;
+  background:var(--blue);
+}
+.kpi:nth-child(2)::before { background:var(--pink); }
+.kpi:nth-child(3)::before { background:var(--purple); }
+.kpi:nth-child(4)::before { background:var(--green); }
+.kpi .icon {
+  width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  font-size:20px; margin-bottom:10px;
+}
+.kpi .label { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; }
+.kpi .value { font-size:28px; font-weight:800; margin-top:8px; letter-spacing:-.02em; }
+.kpi .sub { color:var(--muted); margin-top:7px; font-size:12px; line-height:1.4; }
+.panel {
+  display:grid; grid-template-columns: 1.3fr .7fr; gap:16px; margin-bottom:16px;
+}
+h2 { font-size:18px; margin:0 0 12px; display:flex; align-items:center; gap:8px; }
+h3 { font-size:14px; margin:18px 0 10px; color:#344054; display:flex; align-items:center; gap:6px; }
+.toolbar { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 12px; }
+button {
+  border:1px solid #c6d2e1; background:#fff; color:#172033;
+  padding:9px 12px; border-radius:10px; cursor:pointer; font-weight:700; font-size:13px;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
+button.primary { background:var(--blue); color:white; border-color:var(--blue); }
+button.soft { background:#f8fbff; }
+button.danger { color:var(--red); border-color:#f2bfba; background:#fff; }
+button:hover { transform:translateY(-1px); transition:.15s; }
+input, select {
+  width:100%; border:1px solid #cfdae8; border-radius:9px; padding:8px 9px;
+  font-size:13px; background:#fff; color:#172033;
+}
+input:focus, select:focus {
+  outline:none; border-color:#6aa8da; box-shadow:0 0 0 3px rgba(47,128,192,.14);
+}
+table { width:100%; border-collapse:separate; border-spacing:0; font-size:12px; }
+th {
+  position:sticky; top:0; background:#eef4fa; z-index:2; color:#344054;
+  text-align:left; border-bottom:1px solid var(--line); padding:10px 8px; font-size:12px;
+}
+td { border-bottom:1px solid #edf1f7; padding:6px 6px; vertical-align:middle; }
+tr.owner-Laura { background:linear-gradient(90deg, rgba(253,242,250,.85), transparent 55%); }
+tr.owner-Romain { background:linear-gradient(90deg, rgba(236,253,243,.85), transparent 55%); }
+tr.owner-Commun { background:linear-gradient(90deg, rgba(232,241,251,.72), transparent 55%); }
+tr.type-Revenu td:first-child { box-shadow: inset 4px 0 0 #117a65; }
+tr.type-Dépense td:first-child { box-shadow: inset 4px 0 0 #b7791f; }
+tr.type-Impôt td:first-child { box-shadow: inset 4px 0 0 #b42318; }
+td.num, th.num { text-align:right; }
+.scroll { max-height:680px; overflow:auto; border:1px solid var(--line); border-radius:14px; }
+.badge {
+  display:inline-flex; align-items:center; gap:5px; padding:4px 8px; border-radius:999px;
+  font-size:11px; font-weight:800; white-space:nowrap;
+}
+.badge.type-revenu { background:var(--green-soft); color:var(--green); }
+.badge.type-dépense { background:var(--orange-soft); color:var(--orange); }
+.badge.type-impôt { background:var(--red-soft); color:var(--red); }
+.badge.owner-commun { background:var(--blue-soft); color:var(--blue); }
+.badge.owner-laura { background:var(--pink-soft); color:var(--pink); }
+.badge.owner-romain { background:var(--green-soft); color:var(--green); }
+.badge.account { background:#eef2ff; color:var(--indigo); }
+.badge.small { font-size:10px; padding:3px 7px; }
+svg { width:100%; height:auto; display:block; }
+.note {
+  color:var(--muted); font-size:12px; line-height:1.5; background:#f8fbff;
+  border:1px solid #e2ebf7; border-radius:12px; padding:10px 12px;
+}
+.rules {
+  margin:0; padding-left:17px; color:#344054; font-size:13px; line-height:1.58;
+}
+.two {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;
+}
+.legend {
+  display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px;
+}
+.legend-box {
+  display:flex; flex-wrap:wrap; gap:7px; align-items:center;
+}
+.stats-strip {
+  display:grid; grid-template-columns: repeat(4,1fr); gap:10px; margin-bottom:12px;
+}
+.mini {
+  background:#f8fbff; border:1px solid #e4ebf5; padding:10px 12px; border-radius:14px;
+}
+.mini .t { font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:700; }
+.mini .v { margin-top:6px; font-size:18px; font-weight:800; }
+.quick-list {
+  display:grid; gap:8px;
+}
+.quick-item {
+  border:1px solid #e7edf6; border-radius:12px; padding:10px 12px; background:#fbfdff;
+}
+.quick-item .top {
+  display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px;
+}
+.progress {
+  height:9px; width:100%; background:#eef3f8; border-radius:999px; overflow:hidden;
+}
+.progress > span {
+  display:block; height:100%; border-radius:999px;
+  background:linear-gradient(90deg, #1f4e79, #2f80c0);
+}
+.account-list {
+  display:grid; gap:8px;
+}
+.account-chip {
+  display:flex; justify-content:space-between; gap:10px; align-items:center;
+  padding:10px 12px; border-radius:12px; border:1px solid #e7edf6; background:#fbfdff;
+}
+.muted { color:var(--muted); }
+.right { text-align:right; }
+.icon-pill {
+  display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px;
+  border-radius:10px; background:#eef4fa; font-size:15px;
+}
+.title-inline {
+  display:flex; align-items:center; gap:10px;
+}
+tfoot td {
+  background:#f8fbff; font-weight:700;
+}
+@media (max-width:1150px) {
+  .grid { grid-template-columns: repeat(2,1fr); }
+  .panel,.two,.stats-strip { grid-template-columns:1fr; }
+}
+@media (max-width:760px) {
+  main { padding:14px; }
+  .grid { grid-template-columns:1fr; }
+  header { padding:20px 18px; }
+  header .title-row { display:block; }
+}
+@media print {
+  body { background:white; }
+  header { color:#172033; background:white; border-bottom:1px solid #ddd; }
+  button, .toolbar { display:none; }
+  .scroll { max-height:none; overflow:visible; }
+  .card { box-shadow:none; break-inside:avoid; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="title-row">
+    <div>
+      <h1>Budget 2026 - Web App</h1>
+      <p>Application web locale. Le LMNP reste intégré au budget général. Chaque ligne pilote les calculs par type, affectation et compte. Les données peuvent être sauvegardées dans le navigateur ou exportées.</p>
+      <div class="hero-badges">
+        <span class="hero-chip">🎯 lecture rapide</span>
+        <span class="hero-chip">🎨 code couleur</span>
+        <span class="hero-chip">🧩 comptes éditables</span>
+        <span class="hero-chip">📈 recalcul instantané</span>
+        <button id="installBtn" class="hero-chip install-btn" style="display:none" onclick="installApp()">⬇ Installer</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="grid" id="kpis"></section>
+
+  <section class="panel">
+    <div class="card">
+      <h2><span class="icon-pill">🧾</span>Postes budgétaires modifiables</h2>
+      <div class="toolbar">
+        <button class="primary" onclick="addRow()">➕ Ajouter un poste</button>
+        <button class="soft" onclick="exportCsv()">📤 Exporter CSV</button>
+        <button class="soft" onclick="exportJson()">📦 Exporter JSON</button>
+        <button class="soft" onclick="document.getElementById('jsonImport').click()">📥 Importer JSON</button>
+        <input id="jsonImport" type="file" accept="application/json,.json" style="display:none" onchange="importJson(event)">
+        <button class="soft" onclick="saveLocal()">💾 Sauvegarder navigateur</button>
+        <button class="soft" onclick="loadLocal()">🔄 Recharger sauvegarde</button>
+        <button class="soft" onclick="window.print()">🖨 Imprimer</button>
+        <button class="danger" onclick="resetData()">🗑 Réinitialiser</button>
+      </div>
+
+      <div class="legend">
+        <span class="badge type-revenu">💶 Revenu</span>
+        <span class="badge type-dépense">🧾 Dépense</span>
+        <span class="badge type-impôt">🏛 Impôt</span>
+        <span class="badge owner-commun">🏠 Commun</span>
+        <span class="badge owner-laura">👩 Laura</span>
+        <span class="badge owner-romain">👨 Romain</span>
+      </div>
+
+      <div class="note">
+        Les couleurs servent à repérer immédiatement le type de poste et son affectation.
+        Les lignes communes sont bleutées, Laura en rose, Romain en vert.
+        Tu peux saisir un nouveau compte directement dans la colonne compte.
+      </div>
+
+      <div class="scroll" style="margin-top:12px">
+        <table id="budgetTable">
+          <thead>
+            <tr>
+              <th>Actif</th>
+              <th>Type</th>
+              <th>Poste</th>
+              <th>Libellé</th>
+              <th class="num">€/mois</th>
+              <th>Affectation</th>
+              <th>Compte</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">Total des lignes actives</td>
+              <td class="num" id="tfootTotal">-</td>
+              <td colspan="3"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="icon-pill">🧠</span>Lecture rapide</h2>
+
+      <div class="stats-strip" id="miniStats"></div>
+
+      <h3><span class="icon-pill">📏</span>Règles de calcul</h3>
+      <ul class="rules">
+        <li>Le prorata Laura / Romain est calculé sur les revenus personnels nets après impôt.</li>
+        <li>Les revenus communs réduisent le besoin de trésorerie du compte affecté.</li>
+        <li>Les dépenses communes sont ventilées au prorata des revenus.</li>
+        <li>Les dépenses Laura ou Romain restent personnelles.</li>
+        <li>Le LMNP suit la même règle que les autres postes.</li>
+      </ul>
+
+      <h3><span class="icon-pill">💳</span>Comptes - besoin net commun</h3>
+      <div id="accountFlows" class="account-list"></div>
+
+      <h3><span class="icon-pill">🔎</span>Top postes de dépense</h3>
+      <div id="topSpending" class="quick-list"></div>
+    </div>
+  </section>
+
+  <section class="two">
+    <div class="card">
+      <h2><span class="icon-pill">📊</span>Dépenses par poste</h2>
+      <div id="chartCategories"></div>
+    </div>
+    <div class="card">
+      <h2><span class="icon-pill">🏦</span>Besoin net par compte</h2>
+      <div id="chartAccounts"></div>
+    </div>
+  </section>
+
+  <section class="two">
+    <div class="card">
+      <h2><span class="icon-pill">⚖️</span>Contribution commune</h2>
+      <div id="chartContribution"></div>
+    </div>
+    <div class="card">
+      <h2><span class="icon-pill">🧮</span>Reste à vivre</h2>
+      <div id="chartReste"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const INITIAL_DATA = {"transactions": [{"type": "Revenu", "bloc": "REVENUS", "poste": "REVENUS", "label": "Salaire Romain (net sans 13ème mois / avant impots)", "amount": 3100.45, "owner": "Romain", "account": "CERA Romain", "enabled": true}, {"type": "Revenu", "bloc": "REVENUS", "poste": "REVENUS", "label": "Salaire Laura (net sans 13ème mois / avant impots)", "amount": 2761.62, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Revenu", "bloc": "REVENUS", "poste": "TR", "label": "Tickets Restaurant Romain", "amount": 97.2, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Revenu", "bloc": "REVENUS", "poste": "TR", "label": "Tickets Restaurant Laura", "amount": 102.6, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Revenu", "bloc": "AUTRES REVENUS", "poste": "SCPI", "label": "SCPI Romain", "amount": 100.0, "owner": "Romain", "account": "CERA Romain", "enabled": true}, {"type": "Revenu", "bloc": "AUTRES REVENUS", "poste": "SCPI", "label": "SCPI Laura", "amount": 60.0, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Revenu", "bloc": "AUTRES REVENUS", "poste": "LMNP COMMUN", "label": "Location LMNP 4 RUE DE GERE", "amount": 600.0, "owner": "Commun", "account": "Compte LMNP", "enabled": true}, {"type": "Revenu", "bloc": "AUTRES REVENUS", "poste": "CAF", "label": "Allocations familiales", "amount": 151.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Revenu", "bloc": "AUTRES REVENUS", "poste": "URSAF", "label": "CMG", "amount": 300.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Revenu", "bloc": "AUTRES REVENUS", "poste": "CREDIT IMPOT", "label": "Crédit d’impôt de 1750€ Assmat mensualisé", "amount": 145.83, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Revenu", "bloc": "AUTRES REVENUS", "poste": "CREDIT IMPOT", "label": "Crédit d’impôt 50% Kangourou Kids mensualisé", "amount": 100.17, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Impôt", "bloc": "IMPOTS", "poste": "IMPOTS", "label": "Impôts Romain", "amount": 186.03, "owner": "Romain", "account": "CERA Romain", "enabled": true}, {"type": "Impôt", "bloc": "IMPOTS", "poste": "IMPOTS", "label": "Impôts Laura", "amount": 46.95, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "PRET", "label": "Prêt 405700 (337572G)", "amount": 1659.01, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "PRET", "label": "Prêt 36000 (337571G)", "amount": 148.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "PRET", "label": "ECO PTZ 25000 ((520593G)", "amount": 139.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "PRET", "label": "Assurances emprunteurs (100 / 100)", "amount": 132.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "TAXE", "label": "Taxe foncière (Impots) mensualisée", "amount": 144.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "ASSURANCES", "label": "Assurance Habitation (Caisse d'Epargne) mensualisée", "amount": 48.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "EAU ET ENERGIES", "label": "Fioul mensualisé", "amount": 208.33, "owner": "Commun", "account": "L.A Rachel", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "EAU ET ENERGIES", "label": "Electricité (Total Energie) mensualisée", "amount": 117.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "EAU ET ENERGIES", "label": "Eau (Saur)", "amount": 82.5, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES", "poste": "EAU ET ENERGIES", "label": "Internet (Bouygues)", "amount": 15.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "INVESTISSEMENT LMNP COMMUN", "poste": "PRET", "label": "Prêt 91806 (750338G)", "amount": 435.0, "owner": "Commun", "account": "Compte LMNP", "enabled": true}, {"type": "Dépense", "bloc": "INVESTISSEMENT LMNP COMMUN", "poste": "PRET", "label": "Assurances emprunteurs (50 / 50)", "amount": 40.0, "owner": "Commun", "account": "Compte LMNP", "enabled": true}, {"type": "Dépense", "bloc": "INVESTISSEMENT LMNP COMMUN", "poste": "PRET", "label": "Charge de copro", "amount": 43.33, "owner": "Commun", "account": "Compte LMNP", "enabled": true}, {"type": "Dépense", "bloc": "INVESTISSEMENT LMNP COMMUN", "poste": "PRET", "label": "Assurance PNO", "amount": 21.0, "owner": "Commun", "account": "Compte LMNP", "enabled": true}, {"type": "Dépense", "bloc": "INVESTISSEMENT LMNP COMMUN", "poste": "PRET", "label": "Expert Comptable", "amount": 35.42, "owner": "Commun", "account": "Compte LMNP", "enabled": true}, {"type": "Dépense", "bloc": "INVESTISSEMENT LMNP COMMUN", "poste": "PRET", "label": "Taxe foncière (Impots) mensualisée", "amount": 27.25, "owner": "Commun", "account": "Compte LMNP", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ABONNEMENT", "label": "Spotify", "amount": 12.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ABONNEMENT", "label": "Netflix", "amount": 8.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ABONNEMENT", "label": "Amazon Prime", "amount": 7.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ABONNEMENT", "label": "Cartes Bancaires Compte Joint", "amount": 19.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ABONNEMENT", "label": "Free  Romain", "amount": 9.99, "owner": "Romain", "account": "CERA Romain", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ABONNEMENT", "label": "Bouygues Telecom Laura", "amount": 9.0, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "COURSES", "label": "Alimentation", "amount": 500.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ENTRETIEN", "label": "Commande Amazon", "amount": 350.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ENTRETIEN", "label": "Appel de Fond Entretien Jardin", "amount": 100.0, "owner": "Commun", "account": "L.A Charlie", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ENTRETIEN", "label": "Appel de Fond Travaux", "amount": 250.0, "owner": "Commun", "account": "L.A Charlie", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "SANTE", "label": "Dépassement d'honoraires etc. Laura", "amount": 10.0, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "SANTE", "label": "Dépassement d'honoraires etc. Romain", "amount": 10.0, "owner": "Romain", "account": "CERA Romain", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "ANIMAUX", "label": "Animaux (alimentation, soins, garde, mutuelle)", "amount": 25.0, "owner": "Commun", "account": "L.A Charlie", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "VOITURE LAURA", "label": "Assurance Auto Laura", "amount": 33.5, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "VOITURE LAURA", "label": "Essence Laura", "amount": 130.0, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES FIXES", "poste": "VOITURE LAURA", "label": "Réparations, imprévus voiture Laura et CT", "amount": 70.0, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES ENFANTS", "poste": "GARDE", "label": "Cantine et périsco Charlie", "amount": 90.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES ENFANTS", "poste": "GARDE", "label": "Centre de loisirs Charlie", "amount": 0.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES ENFANTS", "poste": "GARDE", "label": "MAM Rachel", "amount": 673.78, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES ENFANTS", "poste": "GARDE", "label": "Appel de fond CP Rachel", "amount": 70.83, "owner": "Commun", "account": "L.A Rachel", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES ENFANTS", "poste": "PROVISION", "label": "Autres dépenses enfants (Habits / Loisirs / Jouets)", "amount": 30.0, "owner": "Commun", "account": "L.A Charlie", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES ENFANTS", "poste": "SANTE", "label": "Dépassement d'honoraires etc.", "amount": 10.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "DEPENSES ENFANTS", "poste": "SANTE", "label": "Couches et parapharma", "amount": 100.0, "owner": "Commun", "account": "CERA Joint", "enabled": true}, {"type": "Dépense", "bloc": "PATRIMOINE / EPARGNE", "poste": "PATRIMOINE / EPARGNE", "label": "PER", "amount": 100.0, "owner": "Romain", "account": "CERA Romain", "enabled": true}, {"type": "Dépense", "bloc": "PATRIMOINE / EPARGNE", "poste": "PATRIMOINE / EPARGNE", "label": "Assurance Vie", "amount": 100.0, "owner": "Romain", "account": "CERA Romain", "enabled": true}, {"type": "Dépense", "bloc": "PATRIMOINE / EPARGNE", "poste": "PATRIMOINE / EPARGNE", "label": "Assurance Vie", "amount": 100.0, "owner": "Laura", "account": "CERA Laura", "enabled": true}, {"type": "Dépense", "bloc": "LOISIRS", "poste": "VACANCES", "label": "Vacances et wkds : booking, transports, essence, péage, sur place", "amount": 416.67, "owner": "Commun", "account": "L.A Charlie", "enabled": true}, {"type": "Dépense", "bloc": "LOISIRS", "poste": "SORTIES & ACTIVITES", "label": "Sorties, ciné, resto, babysitter", "amount": 100.0, "owner": "Commun", "account": "L.A Charlie", "enabled": true}, {"type": "Dépense", "bloc": "LOISIRS", "poste": "CADEAUX", "label": "Appel de fonds Cadeaux Anniversaire / Noël", "amount": 60.0, "owner": "Commun", "account": "L.A Charlie", "enabled": true}], "accounts": ["CERA Joint", "CERA Laura", "CERA Romain", "Compte LMNP", "L.A Charlie", "L.A Rachel"], "owners": ["Commun", "Laura", "Romain"], "types": ["Revenu", "Dépense", "Impôt"], "postes": ["ABONNEMENT", "ANIMAUX", "ASSURANCES", "CADEAUX", "CAF", "COURSES", "CREDIT IMPOT", "EAU ET ENERGIES", "ENTRETIEN", "GARDE", "IMPOTS", "LMNP COMMUN", "PATRIMOINE / EPARGNE", "PRET", "PROVISION", "REVENUS", "SANTE", "SCPI", "SORTIES & ACTIVITES", "TAXE", "TR", "URSAF", "VACANCES", "VOITURE LAURA"]};
+let data = JSON.parse(JSON.stringify(INITIAL_DATA.transactions));
+
+function eur(v) {
+  return (Number(v)||0).toLocaleString('fr-FR', {style:'currency', currency:'EUR', maximumFractionDigits:0});
+}
+function eur2(v) {
+  return (Number(v)||0).toLocaleString('fr-FR', {style:'currency', currency:'EUR', maximumFractionDigits:2});
+}
+function cleanAmount(v) {
+  if (typeof v === 'number') return v;
+  return Number(String(v).replace(/\s/g,'').replace(',','.')) || 0;
+}
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function unique(arr) {
+  return [...new Set(arr.filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'));
+}
+function datalist(id, values) {
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement('datalist');
+    el.id = id;
+    document.body.appendChild(el);
+  }
+  el.innerHTML = values.map(v=>`<option value="${escapeHtml(v)}"></option>`).join('');
+}
+function ownerClass(o) {
+  return o === 'Laura' ? 'owner-laura' : o === 'Romain' ? 'owner-romain' : 'owner-commun';
+}
+function typeClass(t) {
+  const v = (t||'').toLowerCase();
+  if (v.includes('revenu')) return 'type-revenu';
+  if (v.includes('imp')) return 'type-impôt';
+  return 'type-dépense';
+}
+function iconForPoste(label) {
+  const s = (label||'').toLowerCase();
+  if (s.includes('pret') || s.includes('emprunt')) return '🏠';
+  if (s.includes('taxe') || s.includes('impot')) return '🏛';
+  if (s.includes('eau') || s.includes('energie') || s.includes('internet')) return '⚡';
+  if (s.includes('assurance')) return '🛡';
+  if (s.includes('course') || s.includes('alimentation')) return '🛒';
+  if (s.includes('garde') || s.includes('enfant') || s.includes('charlie') || s.includes('rachel')) return '👶';
+  if (s.includes('voiture') || s.includes('essence')) return '🚗';
+  if (s.includes('sante')) return '🩺';
+  if (s.includes('animal')) return '🐾';
+  if (s.includes('abonnement') || s.includes('spotify') || s.includes('netflix') || s.includes('prime')) return '📱';
+  if (s.includes('vacance') || s.includes('wkds')) return '✈️';
+  if (s.includes('sortie') || s.includes('activite')) return '🎟';
+  if (s.includes('cadeau')) return '🎁';
+  if (s.includes('lmnp') || s.includes('location') || s.includes('scpi')) return '🏘';
+  if (s.includes('epargne') || s.includes('patrimoine') || s.includes('per')) return '💼';
+  if (s.includes('revenu') || s.includes('salaire')) return '💶';
+  return '•';
+}
+function renderTable() {
+  datalist('posteList', unique(data.map(r=>r.poste).concat(INITIAL_DATA.postes)));
+  datalist('accountList', unique(data.map(r=>r.account).concat(INITIAL_DATA.accounts)));
+  const tbody = document.querySelector('#budgetTable tbody');
+  tbody.innerHTML = data.map((r,i)=>`
+    <tr data-i="${i}" class="owner-${r.owner} type-${r.type}">
+      <td><input type="checkbox" data-field="enabled" onchange="updateCell(this)" ${r.enabled ? 'checked' : ''}></td>
+      <td>
+        <span class="badge ${typeClass(r.type)}">${r.type === 'Revenu' ? '💶' : (r.type === 'Impôt' ? '🏛' : '🧾')} ${escapeHtml(r.type)}</span>
+        <div style="margin-top:5px">
+          <select data-field="type" onchange="updateCell(this)">
+            ${INITIAL_DATA.types.map(t=>`<option ${t===r.type?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </div>
+      </td>
+      <td>
+        <div class="title-inline"><span>${iconForPoste(r.poste)}</span><input data-field="poste" list="posteList" value="${escapeHtml(r.poste)}" onchange="updateCell(this)"></div>
+      </td>
+      <td><input data-field="label" value="${escapeHtml(r.label)}" onchange="updateCell(this)"></td>
+      <td><input class="num" data-field="amount" value="${Number(r.amount||0).toFixed(2)}" onchange="updateCell(this)"></td>
+      <td>
+        <span class="badge ${ownerClass(r.owner)}">${r.owner === 'Commun' ? '🏠' : (r.owner === 'Laura' ? '👩' : '👨')} ${escapeHtml(r.owner)}</span>
+        <div style="margin-top:5px">
+          <select data-field="owner" onchange="updateCell(this)">
+            <option ${r.owner==='Commun'?'selected':''}>Commun</option>
+            <option ${r.owner==='Laura'?'selected':''}>Laura</option>
+            <option ${r.owner==='Romain'?'selected':''}>Romain</option>
+          </select>
+        </div>
+      </td>
+      <td>
+        <span class="badge account">💳 ${escapeHtml(r.account)}</span>
+        <div style="margin-top:5px">
+          <input data-field="account" list="accountList" value="${escapeHtml(r.account)}" onchange="updateCell(this)">
+        </div>
+      </td>
+      <td><button class="danger" onclick="deleteRow(${i})">Suppr.</button></td>
+    </tr>`).join('');
+}
+function updateCell(el) {
+  const tr = el.closest('tr');
+  const i = Number(tr.dataset.i);
+  const field = el.dataset.field;
+  if (field === 'enabled') data[i][field] = el.checked;
+  else if (field === 'amount') data[i][field] = cleanAmount(el.value);
+  else data[i][field] = el.value;
+  recalc();
+}
+function deleteRow(i) {
+  data.splice(i,1);
+  recalc();
+}
+function addRow() {
+  data.push({type:'Dépense', poste:'Nouveau poste', label:'A renseigner', amount:0, owner:'Commun', account:'CERA Joint', enabled:true});
+  recalc();
+  setTimeout(()=>document.querySelector('#budgetTable tbody tr:last-child input[data-field="label"]').focus(), 0);
+}
+function resetData() {
+  if (confirm('Réinitialiser les données depuis le fichier généré ?')) {
+    data = JSON.parse(JSON.stringify(INITIAL_DATA.transactions));
+    recalc();
+  }
+}
+function saveLocal() {
+  localStorage.setItem('budget_2026_editable_v3', JSON.stringify(data));
+}
+function loadLocal() {
+  const raw = localStorage.getItem('budget_2026_editable_v3');
+  if (raw) {
+    data = JSON.parse(raw);
+    recalc();
+  }
+}
+function exportCsv() {
+  const cols = ['type','poste','label','amount','owner','account','enabled'];
+  const lines = [cols.join(';')].concat(data.map(r => cols.map(c => `"${String(r[c] ?? '').replaceAll('"','""')}"`).join(';')));
+  const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'budget_2026_postes.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function compute() {
+  const rows = data.filter(r=>r.enabled !== false);
+  const persons = ['Laura','Romain'];
+  const personalRevenue = Object.fromEntries(persons.map(p=>[p,0]));
+  const personalTax = Object.fromEntries(persons.map(p=>[p,0]));
+  const personalExpense = Object.fromEntries(persons.map(p=>[p,0]));
+  const commonByAccount = {};
+  const byPoste = {};
+  const counts = {Revenu:0, Dépense:0, Impôt:0, active:rows.length};
+
+  for (const r of rows) {
+    const amt = cleanAmount(r.amount);
+    const owner = r.owner;
+    const account = r.account || 'Sans compte';
+    counts[r.type] = (counts[r.type]||0) + 1;
+
+    if (r.type === 'Revenu') {
+      if (owner === 'Laura' || owner === 'Romain') personalRevenue[owner] += amt;
+      else {
+        if (!commonByAccount[account]) commonByAccount[account] = {revenues:0, expenses:0};
+        commonByAccount[account].revenues += amt;
+      }
+    } else if (r.type === 'Impôt') {
+      if (owner === 'Laura' || owner === 'Romain') personalTax[owner] += amt;
+      else {
+        if (!commonByAccount[account]) commonByAccount[account] = {revenues:0, expenses:0};
+        commonByAccount[account].expenses += amt;
+      }
+    } else {
+      if (owner === 'Laura' || owner === 'Romain') personalExpense[owner] += amt;
+      else {
+        if (!commonByAccount[account]) commonByAccount[account] = {revenues:0, expenses:0};
+        commonByAccount[account].expenses += amt;
+      }
+      byPoste[r.poste || 'Sans poste'] = (byPoste[r.poste || 'Sans poste'] || 0) + amt;
+    }
+  }
+
+  const ref = {
+    Laura: personalRevenue.Laura - personalTax.Laura,
+    Romain: personalRevenue.Romain - personalTax.Romain
+  };
+  const totalRef = ref.Laura + ref.Romain;
+  const prorata = {
+    Laura: totalRef ? ref.Laura / totalRef : 0.5,
+    Romain: totalRef ? ref.Romain / totalRef : 0.5
+  };
+  const commonNeedByAccount = {};
+  let commonNeedTotal = 0;
+  for (const [acc,v] of Object.entries(commonByAccount)) {
+    const need = v.expenses - v.revenues;
+    commonNeedByAccount[acc] = need;
+    if (need > 0) commonNeedTotal += need;
+  }
+  const commonContribution = {
+    Laura: commonNeedTotal * prorata.Laura,
+    Romain: commonNeedTotal * prorata.Romain
+  };
+  const totalOut = {
+    Laura: commonContribution.Laura + personalExpense.Laura,
+    Romain: commonContribution.Romain + personalExpense.Romain
+  };
+  const reste = {
+    Laura: ref.Laura - totalOut.Laura,
+    Romain: ref.Romain - totalOut.Romain
+  };
+  const topSpending = Object.entries(byPoste).map(([poste, amount])=>({poste, amount})).sort((a,b)=>b.amount-a.amount);
+  const activeTotal = rows.reduce((s,r)=>s + (cleanAmount(r.amount)||0), 0);
+  return {rows, personalRevenue, personalTax, personalExpense, ref, totalRef, prorata, commonNeedByAccount, commonNeedTotal, commonContribution, totalOut, reste, byPoste, topSpending, counts, activeTotal};
+}
+function renderKpis(c) {
+  const config = [
+    ['👩','Revenu net Laura', eur2(c.ref.Laura), (c.prorata.Laura*100).toFixed(1)+' % du prorata', 'var(--pink-soft)'],
+    ['👨','Revenu net Romain', eur2(c.ref.Romain), (c.prorata.Romain*100).toFixed(1)+' % du prorata', 'var(--green-soft)'],
+    ['🏠','Besoin commun net', eur2(c.commonNeedTotal), 'Après revenus communs affectés', 'var(--purple-soft)'],
+    ['🧮','Reste cumulé', eur2(c.reste.Laura + c.reste.Romain), `Laura ${eur2(c.reste.Laura)} - Romain ${eur2(c.reste.Romain)}`, 'var(--blue-soft)']
+  ];
+  document.getElementById('kpis').innerHTML = config.map(k=>`
+    <div class="card kpi">
+      <div class="icon" style="background:${k[4]}">${k[0]}</div>
+      <div class="label">${k[1]}</div>
+      <div class="value">${k[2]}</div>
+      <div class="sub">${k[3]}</div>
+    </div>`).join('');
+}
+function renderMiniStats(c) {
+  const items = [
+    ['Lignes actives', c.counts.active, '🧩'],
+    ['Revenus', c.counts.Revenu || 0, '💶'],
+    ['Dépenses', c.counts.Dépense || 0, '🧾'],
+    ['Impôts', c.counts.Impôt || 0, '🏛']
+  ];
+  document.getElementById('miniStats').innerHTML = items.map(it=>`
+    <div class="mini">
+      <div class="t">${it[2]} ${it[0]}</div>
+      <div class="v">${it[1]}</div>
+    </div>`).join('');
+}
+function renderAccountFlows(c) {
+  const accounts = Object.entries(c.commonNeedByAccount).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
+  const maxNeed = Math.max(1, ...accounts.map(x=>Math.abs(x[1])));
+  document.getElementById('accountFlows').innerHTML = accounts.map(([acc,need]) => {
+      const positive = Math.max(0, need);
+      const width = Math.abs(need)/maxNeed*100;
+      return `<div class="account-chip">
+        <div style="min-width:0">
+          <div class="top">
+            <span class="badge account">💳 ${escapeHtml(acc)}</span>
+            <span class="muted">${need >= 0 ? 'Besoin' : 'Excédent'}</span>
+          </div>
+          <div class="progress"><span style="width:${width}%; background:${need>=0 ? 'linear-gradient(90deg,#6e56cf,#2f80c0)' : 'linear-gradient(90deg,#117a65,#18b08f)'}"></span></div>
+        </div>
+        <div class="right">
+          <div><strong>${eur2(need)}</strong></div>
+          <div class="muted" style="font-size:11px">Laura ${eur2(positive*c.prorata.Laura)} - Romain ${eur2(positive*c.prorata.Romain)}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+function renderTopSpending(c) {
+  const rows = c.topSpending.slice(0,6);
+  const max = Math.max(1, ...rows.map(r=>r.amount));
+  document.getElementById('topSpending').innerHTML = rows.map(r => `
+    <div class="quick-item">
+      <div class="top">
+        <span class="badge type-dépense">${iconForPoste(r.poste)} ${escapeHtml(r.poste)}</span>
+        <strong>${eur2(r.amount)}</strong>
+      </div>
+      <div class="progress"><span style="width:${r.amount/max*100}%"></span></div>
+    </div>
+  `).join('');
+}
+function barChart(containerId, rows, labelKey, valueKey, opts={}) {
+  const width = 760, rowH = 34, left = 205, right = 50, top = 16;
+  const dataRows = rows.filter(r=>Math.abs(r[valueKey])>0.01).slice(0, opts.limit || 12);
+  const max = Math.max(1, ...dataRows.map(r=>Math.abs(r[valueKey])));
+  const height = top + dataRows.length * rowH + 20;
+  const palette = ['#1f4e79','#2f80c0','#6e56cf','#117a65','#c11574','#b7791f','#0f766e','#4757c7'];
+  const bars = dataRows.map((r,i) => {
+    const y = top + i*rowH;
+    const val = r[valueKey];
+    const w = Math.abs(val) / max * (width-left-right);
+    const fill = val < 0 ? '#b42318' : palette[i % palette.length];
+    const icon = iconForPoste(r[labelKey] || '');
+    return `<text x="8" y="${y+19}" font-size="12" fill="#344054">${icon} ${escapeHtml(String(r[labelKey]).slice(0,28))}</text>
+            <rect x="${left}" y="${y+7}" width="${w}" height="18" rx="5" fill="${fill}" opacity=".88"></rect>
+            <text x="${left+w+8}" y="${y+20}" font-size="12" fill="#344054">${eur2(val)}</text>`;
+  }).join('');
+  document.getElementById(containerId).innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img">${bars}</svg>`;
+}
+
+function exportJson() {
+  const payload = {
+    version: 'budget-webapp-v1',
+    exportedAt: new Date().toISOString(),
+    transactions: data
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'budget_2026_sauvegarde.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importJson(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const payload = JSON.parse(reader.result);
+      const imported = Array.isArray(payload) ? payload : payload.transactions;
+      if (!Array.isArray(imported)) throw new Error('Format JSON invalide');
+      data = imported.map(r => ({
+        type: r.type || 'Dépense',
+        poste: r.poste || 'Sans poste',
+        label: r.label || '',
+        amount: cleanAmount(r.amount),
+        owner: r.owner || 'Commun',
+        account: r.account || 'CERA Joint',
+        enabled: r.enabled !== false
+      }));
+      saveLocal();
+      recalc();
+    } catch (e) {
+      alert('Import impossible : ' + e.message);
+    } finally {
+      event.target.value = '';
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+}
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'inline-flex';
+});
+async function installApp() {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'none';
+}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+  });
+}
+
+function recalc() {
+  renderTable();
+  const c = compute();
+  renderKpis(c);
+  renderMiniStats(c);
+  renderAccountFlows(c);
+  renderTopSpending(c);
+  document.getElementById('tfootTotal').textContent = eur2(c.activeTotal);
+  const catRows = Object.entries(c.byPoste).map(([poste, amount])=>({poste, amount})).sort((a,b)=>b.amount-a.amount);
+  barChart('chartCategories', catRows, 'poste', 'amount', {limit:14});
+  const accRows = Object.entries(c.commonNeedByAccount).map(([account, need])=>({account, need})).sort((a,b)=>Math.abs(b.need)-Math.abs(a.need));
+  barChart('chartAccounts', accRows, 'account', 'need', {limit:14});
+  barChart('chartContribution', [
+    {person:'Laura - contribution commune', amount:c.commonContribution.Laura},
+    {person:'Romain - contribution commune', amount:c.commonContribution.Romain},
+    {person:'Laura - charges perso', amount:c.personalExpense.Laura},
+    {person:'Romain - charges perso', amount:c.personalExpense.Romain}
+  ], 'person', 'amount', {limit:4});
+  barChart('chartReste', [
+    {person:'Laura', amount:c.reste.Laura},
+    {person:'Romain', amount:c.reste.Romain}
+  ], 'person', 'amount', {limit:2});
+}
+recalc();
+</script>
+</body>
+</html>
