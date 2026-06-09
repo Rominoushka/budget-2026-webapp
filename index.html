@@ -4,24 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Budget 2026</title>
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#101828">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
-<header class="hero">
-  <div class="heroTop"><div><p>Budget familial</p><h1>2026</h1></div><span id="saveState">Prêt</span></div>
-  <div class="focus"><div><small>Reste cumulé</small><strong id="heroReste">-</strong><em id="heroSub">-</em></div><button id="addTop">+ Poste</button></div>
+<header class="topbar">
+  <div><p id="screenKicker">Budget 2026</p><h1 id="screenTitle">Synthèse</h1></div>
+  <button id="quickAdd" class="roundBtn">+</button>
 </header>
-<nav class="tabs"><button data-tab="home" class="on">Résumé</button><button data-tab="items">Postes</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauver</button></nav>
 <main>
-<section id="home" class="view on"><div id="kpis" class="kpis"></div><article class="box"><h2>À surveiller</h2><div id="watch" class="stack"></div></article><article class="box"><h2>Top dépenses</h2><div id="topSpend" class="stack"></div></article></section>
-<section id="items" class="view"><div class="tools"><input id="q" placeholder="Rechercher"><div class="chips"><button data-owner="Tous" class="on">Tous</button><button data-owner="Commun">Commun</button><button data-owner="Laura">Laura</button><button data-owner="Romain">Romain</button></div><div class="chips"><button data-type="Tous" class="on">Tous</button><button data-type="Revenu">Revenus</button><button data-type="Dépense">Dépenses</button><button data-type="Impôt">Impôts</button></div></div><div class="title"><h2>Postes</h2><button id="addList">Ajouter</button></div><div id="cards" class="cards"></div></section>
-<section id="accounts" class="view"><article class="box"><h2>Besoin par compte</h2><div id="accountList" class="stack"></div></article><article class="box"><h2>Contribution</h2><div id="contrib" class="stack"></div></article></section>
-<section id="backup" class="view"><article class="box"><h2>Sauvegarde</h2><p class="help">Autosave local à chaque modification. Les 20 dernières versions restent restaurables sur cet appareil.</p><div class="actions"><button id="saveNow">Sauver maintenant</button><button id="restoreLast">Restaurer dernière</button><button id="exportJson">Exporter JSON</button><button id="importBtn">Importer JSON</button><button id="exportCsv">Exporter CSV</button><button id="reset" class="danger">Reset</button></div><input id="importFile" type="file" accept=".json,application/json" hidden></article><article class="box"><h2>Historique</h2><div id="history" class="stack"></div></article></section>
+  <section id="dashboard" class="screen active">
+    <article class="balanceCard"><p>Reste disponible</p><strong id="globalRemain">-</strong><span id="remainDetail">-</span></article>
+    <div id="kpis" class="kpiGrid"></div>
+    <article class="panel"><div class="panelTitle"><h2>À surveiller</h2><span id="saveState">Prêt</span></div><div id="alerts" class="stack"></div></article>
+    <article class="panel"><div class="panelTitle"><h2>Plus gros postes</h2><span>mensuel</span></div><div id="topCategories" class="stack"></div></article>
+  </section>
+  <section id="lines" class="screen">
+    <div class="stickyTools"><input id="search" placeholder="Rechercher une ligne"><div class="segment" id="ownerFilters"><button data-owner="Tous" class="active">Tous</button><button data-owner="Commun">Commun</button><button data-owner="Laura">Laura</button><button data-owner="Romain">Romain</button></div><div class="segment" id="typeFilters"><button data-type="Tous" class="active">Tous</button><button data-type="Revenu">Revenus</button><button data-type="Dépense">Dépenses</button><button data-type="Impôt">Impôts</button></div></div>
+    <div class="listHead"><h2>Lignes budgétaires</h2><button id="addLine">Ajouter</button></div><div id="lineList" class="transactionList"></div>
+  </section>
+  <section id="budgets" class="screen"><article class="panel"><div class="panelTitle"><h2>Postes de dépense</h2><span>par catégorie</span></div><div id="budgetList" class="stack"></div></article></section>
+  <section id="accounts" class="screen"><article class="panel"><div class="panelTitle"><h2>Comptes</h2><span>besoin net</span></div><div id="accountList" class="stack"></div></article><article class="panel"><div class="panelTitle"><h2>Contribution</h2><span>prorata</span></div><div id="contributionList" class="stack"></div></article></section>
+  <section id="settings" class="screen"><article class="panel"><h2>Sauvegarde</h2><p class="help">Sauvegarde automatique locale après chaque modification. Les 25 dernières versions sont conservées sur cet appareil.</p><div class="actionGrid"><button id="saveNow">Sauver maintenant</button><button id="restoreLast">Restaurer dernière</button><button id="exportJson">Exporter JSON</button><button id="importJson">Importer JSON</button><button id="exportCsv">Exporter CSV</button><button id="resetData" class="danger">Réinitialiser</button></div><input id="importFile" type="file" accept="application/json,.json" hidden></article><article class="panel"><div class="panelTitle"><h2>Historique</h2><span id="historyCount">-</span></div><div id="historyList" class="stack"></div></article></section>
 </main>
-<dialog id="edit"><form method="dialog"><div class="sheetHead"><div><p>Fiche poste</p><h2 id="editTitle">Modifier</h2></div><button value="cancel" class="close">×</button></div><label>Type<select id="fType"><option>Revenu</option><option>Dépense</option><option>Impôt</option></select></label><label>Affectation<select id="fOwner"><option>Commun</option><option>Laura</option><option>Romain</option></select></label><label>Montant mensuel<input id="fAmount" inputmode="decimal"></label><label>Compte<input id="fAccount" list="accounts"></label><label>Poste<input id="fPoste" list="postes"></label><label>Libellé<textarea id="fLabel" rows="3"></textarea></label><label class="switch"><span>Actif</span><input id="fEnabled" type="checkbox"></label><div class="sheetActions"><button type="button" id="del" class="danger">Supprimer</button><button type="button" id="dup">Copier</button><button type="button" id="ok" class="primary">Valider</button></div></form></dialog>
-<datalist id="accounts"></datalist><datalist id="postes"></datalist>
+<nav class="bottomNav"><button data-screen="dashboard" class="active"><b>⌂</b><span>Accueil</span></button><button data-screen="lines"><b>☰</b><span>Lignes</span></button><button data-screen="budgets"><b>◌</b><span>Postes</span></button><button data-screen="accounts"><b>▣</b><span>Comptes</span></button><button data-screen="settings"><b>⚙</b><span>Plus</span></button></nav>
+<dialog id="editor" class="sheet"><form method="dialog"><div class="sheetTop"><div><p>Modifier une ligne</p><h2 id="editorTitle">Poste</h2></div><button class="close" value="cancel">×</button></div><div class="editTabs"><button type="button" data-edit-tab="info" class="active">Infos</button><button type="button" data-edit-tab="amount">Montant</button><button type="button" data-edit-tab="account">Compte</button><button type="button" data-edit-tab="options">Options</button></div><section id="tab-info" class="editPane active"><label>Libellé<textarea id="fLabel" rows="3"></textarea></label><label>Poste<input id="fPoste" list="posteData"></label></section><section id="tab-amount" class="editPane"><label>Type<select id="fType"><option>Revenu</option><option>Dépense</option><option>Impôt</option></select></label><label>Montant mensuel<input id="fAmount" inputmode="decimal"></label></section><section id="tab-account" class="editPane"><label>Affectation<select id="fOwner"><option>Commun</option><option>Laura</option><option>Romain</option></select></label><label>Compte<input id="fAccount" list="accountData"></label></section><section id="tab-options" class="editPane"><label class="switch"><span>Ligne active</span><input id="fEnabled" type="checkbox"></label><p class="help">Une ligne désactivée reste visible mais n’entre plus dans les calculs.</p></section><div class="sheetActions"><button type="button" id="deleteLine" class="danger">Supprimer</button><button type="button" id="duplicateLine">Dupliquer</button><button type="button" id="saveLine" class="primary">Enregistrer</button></div></form></dialog>
+<datalist id="posteData"></datalist><datalist id="accountData"></datalist>
 <script src="data.js"></script><script src="app.js"></script>
 </body>
 </html>
