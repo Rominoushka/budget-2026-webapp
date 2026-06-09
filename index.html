@@ -1,90 +1,27 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Budget 2026</title>
-  <meta name="theme-color" content="#1f4e79">
-  <meta name="description" content="Web app budget familial 2026 responsive iPhone iPad.">
-  <link rel="manifest" href="../manifest.webmanifest">
-  <link rel="apple-touch-icon" href="../icons/icon-192.png">
-  <link rel="icon" href="../icons/icon-192.png">
-  <link rel="stylesheet" href="app.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Budget 2026</title>
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <header class="hero">
-    <div>
-      <p class="eyebrow">Budget familial</p>
-      <h1>Budget 2026</h1>
-      <p class="subtitle">Simulateur responsive iPhone et iPad. LMNP intégré, comptes éditables, sauvegarde locale.</p>
-    </div>
-    <button id="installBtn" class="install" hidden>Installer</button>
-  </header>
-
-  <main>
-    <section id="kpis" class="kpis" aria-label="Indicateurs principaux"></section>
-
-    <section class="layout">
-      <aside class="side-card">
-        <h2>Lecture rapide</h2>
-        <div id="miniStats" class="mini-grid"></div>
-        <h3>Flux par compte</h3>
-        <div id="accountFlows" class="stack"></div>
-        <h3>Top dépenses</h3>
-        <div id="topSpending" class="stack"></div>
-      </aside>
-
-      <section class="table-card">
-        <div class="section-head">
-          <div>
-            <h2>Postes budgétaires</h2>
-            <p>Sur iPhone, chaque ligne devient une carte. Sur iPad, le tableau reste compact.</p>
-          </div>
-        </div>
-
-        <div class="toolbar" aria-label="Actions budget">
-          <button class="primary" id="addRow">Ajouter</button>
-          <button id="saveLocal">Sauver</button>
-          <button id="loadLocal">Recharger</button>
-          <button id="exportJson">Export JSON</button>
-          <button id="exportCsv">Export CSV</button>
-          <button id="importJsonBtn">Import JSON</button>
-          <button id="printBtn">Imprimer</button>
-          <button class="danger" id="resetData">Reset</button>
-          <input id="jsonImport" type="file" accept="application/json,.json" hidden>
-        </div>
-
-        <div class="legend">
-          <span class="pill revenu">Revenu</span>
-          <span class="pill depense">Dépense</span>
-          <span class="pill impot">Impôt</span>
-          <span class="pill commun">Commun</span>
-          <span class="pill laura">Laura</span>
-          <span class="pill romain">Romain</span>
-        </div>
-
-        <div id="tableWrap" class="table-wrap">
-          <table id="budgetTable">
-            <thead>
-              <tr><th>Actif</th><th>Type</th><th>Poste</th><th>Libellé</th><th>€/mois</th><th>Affectation</th><th>Compte</th><th></th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </section>
-    </section>
-
-    <section class="charts">
-      <article><h2>Dépenses par poste</h2><div id="chartCategories" class="chart"></div></article>
-      <article><h2>Besoin net par compte</h2><div id="chartAccounts" class="chart"></div></article>
-      <article><h2>Contribution</h2><div id="chartContribution" class="chart"></div></article>
-      <article><h2>Reste à vivre</h2><div id="chartReste" class="chart"></div></article>
-    </section>
-  </main>
-
-  <datalist id="posteList"></datalist>
-  <datalist id="accountList"></datalist>
-  <script src="data.js"></script>
-  <script src="app.js"></script>
+<header class="hero">
+  <div class="heroTop"><div><p>Budget familial</p><h1>2026</h1></div><span id="saveState">Prêt</span></div>
+  <div class="focus"><div><small>Reste cumulé</small><strong id="heroReste">-</strong><em id="heroSub">-</em></div><button id="addTop">+ Poste</button></div>
+</header>
+<nav class="tabs"><button data-tab="home" class="on">Résumé</button><button data-tab="items">Postes</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauver</button></nav>
+<main>
+<section id="home" class="view on"><div id="kpis" class="kpis"></div><article class="box"><h2>À surveiller</h2><div id="watch" class="stack"></div></article><article class="box"><h2>Top dépenses</h2><div id="topSpend" class="stack"></div></article></section>
+<section id="items" class="view"><div class="tools"><input id="q" placeholder="Rechercher"><div class="chips"><button data-owner="Tous" class="on">Tous</button><button data-owner="Commun">Commun</button><button data-owner="Laura">Laura</button><button data-owner="Romain">Romain</button></div><div class="chips"><button data-type="Tous" class="on">Tous</button><button data-type="Revenu">Revenus</button><button data-type="Dépense">Dépenses</button><button data-type="Impôt">Impôts</button></div></div><div class="title"><h2>Postes</h2><button id="addList">Ajouter</button></div><div id="cards" class="cards"></div></section>
+<section id="accounts" class="view"><article class="box"><h2>Besoin par compte</h2><div id="accountList" class="stack"></div></article><article class="box"><h2>Contribution</h2><div id="contrib" class="stack"></div></article></section>
+<section id="backup" class="view"><article class="box"><h2>Sauvegarde</h2><p class="help">Autosave local à chaque modification. Les 20 dernières versions restent restaurables sur cet appareil.</p><div class="actions"><button id="saveNow">Sauver maintenant</button><button id="restoreLast">Restaurer dernière</button><button id="exportJson">Exporter JSON</button><button id="importBtn">Importer JSON</button><button id="exportCsv">Exporter CSV</button><button id="reset" class="danger">Reset</button></div><input id="importFile" type="file" accept=".json,application/json" hidden></article><article class="box"><h2>Historique</h2><div id="history" class="stack"></div></article></section>
+</main>
+<dialog id="edit"><form method="dialog"><div class="sheetHead"><div><p>Fiche poste</p><h2 id="editTitle">Modifier</h2></div><button value="cancel" class="close">×</button></div><label>Type<select id="fType"><option>Revenu</option><option>Dépense</option><option>Impôt</option></select></label><label>Affectation<select id="fOwner"><option>Commun</option><option>Laura</option><option>Romain</option></select></label><label>Montant mensuel<input id="fAmount" inputmode="decimal"></label><label>Compte<input id="fAccount" list="accounts"></label><label>Poste<input id="fPoste" list="postes"></label><label>Libellé<textarea id="fLabel" rows="3"></textarea></label><label class="switch"><span>Actif</span><input id="fEnabled" type="checkbox"></label><div class="sheetActions"><button type="button" id="del" class="danger">Supprimer</button><button type="button" id="dup">Copier</button><button type="button" id="ok" class="primary">Valider</button></div></form></dialog>
+<datalist id="accounts"></datalist><datalist id="postes"></datalist>
+<script src="data.js"></script><script src="app.js"></script>
 </body>
 </html>
