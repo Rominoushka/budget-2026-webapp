@@ -44,3 +44,7 @@ Cette application est statique. Elle peut être déposée telle quelle sur :
 
 Les données modifiées sont stockées dans le navigateur via `localStorage`.
 Pour ne pas perdre un scénario, utiliser `Exporter JSON`.
+
+## Note
+
+Publication par micro-changements.
