@@ -1,7 +1,7 @@
 {
-  "name": "Budget 2026 Formules",
+  "name": "Budget 2026 V5",
   "short_name": "Budget",
-  "description": "Budget familial 2026 avec formules éditables, chiffrement local et synchronisation GitHub",
+  "description": "Budget familial 2026 avec graphiques dynamiques, formules éditables et synchronisation GitHub",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
