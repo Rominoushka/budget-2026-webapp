@@ -11,63 +11,58 @@
 <body>
   <section id="lock" class="lock">
     <div class="lockCard">
-      <div class="brand">
-        <span class="brandDot"></span>
+      <div class="brandRow">
+        <div class="brandLogo"></div>
         <div>
           <p class="eyebrow">Budget 2026</p>
-          <h1>Coffre budget</h1>
+          <h1>Coffre mobile</h1>
         </div>
       </div>
-
-      <p class="help">
-        Un seul mot de passe ouvre le coffre. Sur le premier iPhone, clique sur <b>Démarrer</b>, puis <b>Pousser GitHub</b>.
-        Sur le deuxième, utilise le même mot de passe puis <b>Charger GitHub</b>.
-      </p>
-
+      <p class="help">Un seul mot de passe. Sur le premier iPhone, clique sur Démarrer puis Pousser GitHub. Sur le second, utilise le même mot de passe puis Charger GitHub.</p>
       <label>Mot de passe du coffre
-        <input id="pass" type="password" autocomplete="current-password" placeholder="Ton mot de passe">
+        <input id="pass" type="password" placeholder="Mot de passe">
       </label>
-
-      <details id="advanced">
-        <summary>Réglages GitHub avancés</summary>
+      <div class="lockActions">
+        <button id="start" class="primary wide">Démarrer</button>
+        <div class="grid2">
+          <button id="openLocal">Ouvrir local</button>
+          <button id="pullGithub">Charger GitHub</button>
+        </div>
+        <button id="createSeed">Créer depuis data.js</button>
+      </div>
+      <details>
+        <summary>Réglages GitHub</summary>
         <label>Token GitHub
           <input id="token" type="password" placeholder="Token avec Contents read/write">
         </label>
         <div class="grid2">
-          <label>Owner
-            <input id="owner" value="Rominoushka">
-          </label>
-          <label>Repository
-            <input id="repo" value="budget-2026-webapp">
-          </label>
+          <label>Owner<input id="owner" value="Rominoushka"></label>
+          <label>Repository<input id="repo" value="budget-2026-webapp"></label>
         </div>
         <div class="grid2">
-          <label>Branch
-            <input id="branch" value="main">
-          </label>
-          <label>Fichier distant
-            <input id="path" value="data/vault.json">
-          </label>
+          <label>Branch<input id="branch" value="main"></label>
+          <label>Fichier<input id="path" value="data/vault.json"></label>
+        </div>
+        <div class="grid2">
+          <button id="testGithub">Tester GitHub</button>
+          <button id="clearToken" class="danger">Effacer token local</button>
         </div>
       </details>
-
-      <button id="start" class="primary wide">Démarrer</button>
-      <div class="grid">
-        <button id="openLocal">Ouvrir local</button>
-        <button id="pull">Charger GitHub</button>
-      </div>
-      <button id="create">Créer depuis data.js</button>
-      <p id="msg" class="msg"></p>
+      <p id="lockMsg" class="msg"></p>
+      <p class="versionTag">V5 - graphiques dynamiques</p>
     </div>
   </section>
 
   <header>
     <div>
       <small>Budget 2026</small>
-      <h1 id="title">Synthèse</h1>
-      <span id="state">Non synchronisé</span>
+      <h1 id="screenTitle">Synthèse</h1>
+      <span id="syncState">Non synchronisé</span>
     </div>
-    <button id="add" class="round" aria-label="Ajouter">+</button>
+    <div class="headerActions">
+      <button id="refreshApp" title="Mettre à jour">↻</button>
+      <button id="add" class="round" title="Ajouter">+</button>
+    </div>
   </header>
 
   <main>
@@ -77,50 +72,30 @@
         <strong id="remain">-</strong>
         <span id="remainSub">-</span>
       </article>
-
       <div id="kpis" class="kpis"></div>
-
       <article class="box">
-        <div class="boxTitle">
-          <h2>Scénario</h2>
-          <span id="saveState">Prêt</span>
-        </div>
-        <div class="row">
-          <select id="scenario"></select>
-          <button id="newSc">Nouveau</button>
-        </div>
+        <div class="boxTitle"><h2>Scénario</h2><span id="saveState">Prêt</span></div>
+        <div class="row"><select id="scenario"></select><button id="newSc">Nouveau</button></div>
       </article>
-
       <article class="box">
         <h2>Synchronisation</h2>
-        <p class="help">Après modification sur un iPhone : <b>Pousser GitHub</b>. Sur l’autre : <b>Charger GitHub</b>.</p>
-        <div class="grid">
-          <button id="push" class="primary">Pousser GitHub</button>
-          <button id="pull2">Charger GitHub</button>
-        </div>
+        <p class="help">Après modification sur un iPhone : Pousser GitHub. Sur l’autre : Charger GitHub.</p>
+        <div class="grid2"><button id="pushNow" class="primary">Pousser GitHub</button><button id="pullNow">Charger GitHub</button></div>
       </article>
-
-      <article class="box">
-        <h2>Alertes</h2>
-        <div id="alerts" class="stack"></div>
-      </article>
-
-      <article class="box">
-        <h2>Top postes</h2>
-        <div id="top" class="stack"></div>
-      </article>
+      <article class="box"><h2>Alertes</h2><div id="alerts" class="stack"></div></article>
+      <article class="box"><h2>Top postes</h2><div id="topPosts" class="stack"></div></article>
     </section>
 
     <section id="lines" class="screen">
       <div class="tools">
-        <input id="q" placeholder="Rechercher une ligne">
-        <div class="seg">
+        <input id="search" placeholder="Rechercher une ligne">
+        <div class="seg" id="ownerSeg">
           <button data-owner="Tous" class="on">Tous</button>
           <button data-owner="Commun">Commun</button>
           <button data-owner="Laura">Laura</button>
           <button data-owner="Romain">Romain</button>
         </div>
-        <div class="seg">
+        <div class="seg" id="typeSeg">
           <button data-type="Tous" class="on">Tous</button>
           <button data-type="Revenu">Revenus</button>
           <button data-type="Dépense">Dépenses</button>
@@ -130,141 +105,68 @@
       <div id="list" class="list"></div>
     </section>
 
-    <section id="accounts" class="screen">
-      <article class="box">
-        <h2>Comptes</h2>
-        <div id="accountsList" class="stack"></div>
-      </article>
-      <article class="box">
-        <h2>Contribution</h2>
-        <div id="contrib" class="stack"></div>
-      </article>
+    <section id="charts" class="screen">
+      <article class="box"><h2>Répartition mensuelle</h2><div id="chartBalance" class="chartWrap"></div></article>
+      <article class="box"><h2>Top dépenses</h2><div id="chartPosts" class="chartWrap"></div></article>
+      <article class="box"><h2>Charge par personne</h2><div id="chartPeople" class="chartWrap"></div></article>
+      <article class="box"><h2>Comptes à alimenter</h2><div id="chartAccounts" class="chartWrap"></div></article>
     </section>
 
     <section id="more" class="screen">
       <article class="box">
         <h2>Scénarios</h2>
-        <div class="grid">
+        <div class="grid2">
           <button id="dupSc">Dupliquer actif</button>
           <button id="renSc">Renommer</button>
           <button id="delSc" class="danger">Supprimer</button>
+          <button id="formulaOnly">Voir formules</button>
         </div>
       </article>
-
-      <article class="box">
-        <h2>Formules</h2>
-        <p class="help">Les lignes issues de l’Excel conservent leurs formules. Tu peux les modifier dans chaque ligne. Les variables sont éditables au format JSON.</p>
-        <button id="showFormulaLines">Voir lignes calculées</button>
-      </article>
-
       <article class="box">
         <h2>Sauvegarde</h2>
-        <div class="grid">
-          <button id="save">Sauver local</button>
+        <div class="grid2">
+          <button id="saveLocal">Sauver local</button>
           <button id="exportClear">Exporter clair</button>
           <button id="exportCrypt">Exporter chiffré</button>
-          <button id="importFileBtn">Importer</button>
+          <button id="importJson">Importer</button>
           <button id="exportCsv">Exporter CSV</button>
           <button id="reset" class="danger">Reset local</button>
         </div>
         <input id="file" type="file" accept=".json,application/json" hidden>
       </article>
-
-      <article class="box">
-        <h2>Paramètres</h2>
-        <div class="grid">
-          <button id="config">Modifier GitHub</button>
-          <button id="forget" class="danger">Effacer token local</button>
-        </div>
-      </article>
-
-      <article class="box">
-        <h2>Historique local</h2>
-        <div id="hist" class="stack"></div>
-      </article>
+      <article class="box"><h2>Historique local</h2><div id="hist" class="stack"></div></article>
+      <article class="box"><h2>Version</h2><p class="help">Version active : V5 - graphiques dynamiques. Le bouton ↻ vide le cache et recharge l’application.</p></article>
     </section>
   </main>
 
-  <nav aria-label="Menu principal">
+  <nav>
     <button data-go="home" class="on"><span class="navIcon">⌂</span><span class="navLabel">Accueil</span></button>
     <button data-go="lines"><span class="navIcon">☰</span><span class="navLabel">Lignes</span></button>
-    <button data-go="accounts"><span class="navIcon">▣</span><span class="navLabel">Comptes</span></button>
+    <button data-go="charts"><span class="navIcon">◔</span><span class="navLabel">Graphes</span></button>
     <button data-go="more"><span class="navIcon">⚙</span><span class="navLabel">Plus</span></button>
   </nav>
 
   <dialog id="edit">
     <form method="dialog">
-      <div class="sheetTop">
-        <h2 id="editTitle">Ligne</h2>
-        <button value="cancel" class="close">×</button>
-      </div>
-
-      <label>Libellé
-        <textarea id="fLabel" rows="2"></textarea>
-      </label>
-
-      <label>Poste
-        <input id="fPoste" list="postes">
-      </label>
-
+      <div class="sheetTop"><h2 id="editTitle">Ligne</h2><button value="cancel" class="close">×</button></div>
+      <label>Libellé<textarea id="fLabel" rows="2"></textarea></label>
+      <label>Poste<input id="fPoste" list="postes"></label>
       <div class="grid2">
-        <label>Montant manuel
-          <input id="fAmount" inputmode="decimal">
-        </label>
-        <label>Fréquence
-          <select id="fFreq">
-            <option value="monthly">Mensuel</option>
-            <option value="annual">Annuel mensualisé</option>
-            <option value="oneoff">Ponctuel lissé sur 12 mois</option>
-          </select>
-        </label>
+        <label>Montant manuel<input id="fAmount" inputmode="decimal"></label>
+        <label>Fréquence<select id="fFreq"><option value="monthly">Mensuel</option><option value="annual">Annuel mensualisé</option><option value="oneoff">Ponctuel lissé sur 12 mois</option></select></label>
       </div>
-
-      <label>Formule mensuelle éditable
-        <textarea id="fFormula" rows="3" placeholder='Ex : (brutAnnuel/12)*0.75 ou ligne("Salaire Romain")*tauxImpots'></textarea>
-      </label>
-
-      <label>Variables de formule JSON
-        <textarea id="fVars" rows="3" placeholder='Ex : {"brutAnnuel":52800,"tauxImpots":0.06}'></textarea>
-      </label>
-
+      <label>Formule mensuelle<textarea id="fFormula" rows="3" placeholder='Ex : (brutAnnuel/12)*0.75 ou ligne("Salaire Romain")*tauxImpots'></textarea></label>
+      <label>Variables JSON<textarea id="fVars" rows="3" placeholder='{"brutAnnuel":52800,"tauxImpots":0.06}'></textarea></label>
       <div id="formulaPreview" class="preview">Montant calculé : -</div>
-
       <div class="grid2">
-        <label>Type
-          <select id="fType">
-            <option>Revenu</option>
-            <option>Dépense</option>
-            <option>Impôt</option>
-          </select>
-        </label>
-        <label>Affectation
-          <select id="fOwner">
-            <option>Commun</option>
-            <option>Laura</option>
-            <option>Romain</option>
-            <option>Laura/Romain</option>
-          </select>
-        </label>
+        <label>Type<select id="fType"><option>Revenu</option><option>Dépense</option><option>Impôt</option></select></label>
+        <label>Affectation<select id="fOwner"><option>Commun</option><option>Laura</option><option>Romain</option></select></label>
       </div>
-
-      <label>Compte
-        <input id="fAccount" list="accountsData">
-      </label>
-
-      <label>Note
-        <textarea id="fNote" rows="2"></textarea>
-      </label>
-
-      <label class="switch">Actif
-        <input id="fEnabled" type="checkbox">
-      </label>
-
-      <div class="grid">
-        <button type="button" id="del" class="danger">Supprimer</button>
-        <button type="button" id="copy">Copier</button>
-        <button type="button" id="ok" class="primary">OK</button>
-      </div>
+      <label>Compte<input id="fAccount" list="accountsData"></label>
+      <label>Note<textarea id="fNote" rows="2"></textarea></label>
+      <label class="switch">Actif<input id="fEnabled" type="checkbox"></label>
+      <div class="grid2"><button type="button" id="del" class="danger">Supprimer</button><button type="button" id="copy">Copier</button></div>
+      <button type="button" id="ok" class="primary wide">Enregistrer</button>
     </form>
   </dialog>
 
