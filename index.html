@@ -1,30 +1,38 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>Budget 2026</title>
-  <meta name="theme-color" content="#101828">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="app.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Budget 2026</title>
+<meta name="theme-color" content="#101828">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="app.css">
+<style>
+/* V7 - lisibilité, analyse fine, iPad */
+:root{--soft:#f8fafc;--shadow:0 14px 36px rgba(16,24,40,.08)}
+body{background:linear-gradient(180deg,#f8fafc,#eef2f7)}
+main{max-width:1160px}.screen{animation:v7fade .18s ease}@keyframes v7fade{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+.v7Lead{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;margin:2px 0 12px}.v7Lead h2{margin:0;font-size:21px;letter-spacing:-.04em}.v7Lead p{margin:4px 0 0;color:#667085;font-size:13px}.v7Pill{border:1px solid #dbeafe;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:950;white-space:nowrap}.analysisGrid{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0}.insight{background:#fff;border:1px solid #e4e7ec;border-radius:24px;padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}.insight:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:#2563eb}.insight.good:before{background:#047857}.insight.warn:before{background:#b45309}.insight.bad:before{background:#b42318}.insight small{display:block;text-transform:uppercase;letter-spacing:.07em;color:#667085;font-size:10px;font-weight:950}.insight strong{display:block;font-size:23px;letter-spacing:-.05em;margin-top:5px}.insight span{display:block;color:#667085;font-size:12px;margin-top:4px;line-height:1.35}.panelGrid{display:grid;grid-template-columns:1fr;gap:12px}.metricRows{display:grid;gap:8px}.metric{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #eef2f7;background:#fcfcfd;border-radius:16px;padding:11px 12px}.metric b{font-size:14px}.metric em{font-style:normal;font-weight:950}.scoreBar{height:10px;background:#eef2f7;border-radius:999px;overflow:hidden;margin-top:10px}.scoreBar i{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#38bdf8);border-radius:999px}.chartWrap{min-height:170px;display:grid;place-items:center}.chartWrap svg{max-height:280px}.list .tx{transition:transform .15s ease,box-shadow .15s ease}.tx .amount{font-variant-numeric:tabular-nums}.screenHint{color:#667085;font-size:12px;margin:-4px 0 12px}.ipadOnly{display:none}
+@media(min-width:760px){body{padding-bottom:96px}main{padding:20px}.homeDesk{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;align-items:start}.homeDesk>.left,.homeDesk>.right{display:grid;gap:12px}.analysisGrid{grid-template-columns:repeat(3,1fr)}.panelGrid{grid-template-columns:1fr 1fr}.chartsGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.chartsGrid .box{margin-bottom:0}.ipadOnly{display:block}#lines .list{grid-template-columns:1fr 1fr}.tools{top:82px}.hero{min-height:170px;display:flex;flex-direction:column;justify-content:center}.hero strong{font-size:46px}.box{border-radius:26px}.tx{border-radius:26px}}
+@media(min-width:1024px){header{padding-left:32px;padding-right:32px}main{padding:24px 26px}.homeDesk{grid-template-columns:1.1fr .9fr}.analysisGrid{grid-template-columns:repeat(4,1fr)}#lines .list{grid-template-columns:1fr 1fr 1fr}.panelGrid{grid-template-columns:1fr 1fr 1fr}nav{width:min(860px,calc(100vw - 60px));grid-template-columns:repeat(5,1fr)!important}.screenHint{font-size:13px}}
+nav{grid-template-columns:repeat(5,1fr)}
+</style>
 </head>
 <body>
 <section id="lock" class="lock">
   <div class="lockCard">
     <div class="brandRow"><div class="brandLogo"></div><div><p class="eyebrow">Budget 2026</p><h1>Coffre mobile</h1></div></div>
-    <p class="help">Un seul mot de passe. Sur le premier iPhone : Démarrer puis Pousser GitHub. Sur le second : même mot de passe puis Charger GitHub.</p>
+    <p class="help">Un seul mot de passe. Sur le premier appareil : Démarrer puis Pousser GitHub. Sur le second : même mot de passe puis Charger GitHub.</p>
     <label>Mot de passe du coffre<input id="pass" type="password" placeholder="Mot de passe"></label>
     <button id="start" class="primary wide">Démarrer</button>
     <div class="grid2"><button id="openLocal">Ouvrir local</button><button id="pull">Charger GitHub</button></div>
     <button id="create">Créer depuis data.js</button>
-    <details>
-      <summary>Réglages GitHub</summary>
+    <details><summary>Réglages GitHub</summary>
       <label>Token GitHub<input id="token" type="password" placeholder="Token Contents read/write"></label>
       <div class="grid2"><label>Owner<input id="owner" value="Rominoushka"></label><label>Repository<input id="repo" value="budget-2026-webapp"></label></div>
       <div class="grid2"><label>Branch<input id="branch" value="main"></label><label>Fichier<input id="path" value="data/vault.json"></label></div>
     </details>
-    <p id="msg" class="msg"></p>
-    <p class="versionTag">V5 - graphiques dynamiques</p>
+    <p id="msg" class="msg"></p><p class="versionTag">V7 - analyse iPad</p>
   </div>
 </section>
 <header>
@@ -32,75 +40,48 @@
   <div class="headerActions"><button id="refreshApp" title="Mettre à jour">↻</button><button id="add" class="round">+</button></div>
 </header>
 <main>
-  <section id="home" class="screen on">
-    <article class="hero"><p>Reste disponible</p><strong id="remain">-</strong><span id="remainSub">-</span></article>
-    <div id="kpis" class="kpis"></div>
-    <article class="box"><div class="boxTitle"><h2>Scénario</h2><span id="saveState">Prêt</span></div><div class="row"><select id="scenario"></select><button id="newSc">Nouveau</button></div></article>
-    <article class="box"><h2>Synchronisation</h2><p class="help">Après modification sur un iPhone : Pousser GitHub. Sur l’autre : Charger GitHub.</p><div class="grid2"><button id="push" class="primary">Pousser GitHub</button><button id="pull2">Charger GitHub</button></div></article>
-    <article class="box"><h2>Alertes</h2><div id="alerts" class="stack"></div></article>
-    <article class="box"><h2>Top postes</h2><div id="top" class="stack"></div></article>
-  </section>
-  <section id="lines" class="screen">
-    <div class="tools">
-      <input id="q" placeholder="Rechercher une ligne">
-      <div class="seg"><button data-owner="Tous" class="on">Tous</button><button data-owner="Commun">Commun</button><button data-owner="Laura">Laura</button><button data-owner="Romain">Romain</button></div>
-      <div class="seg"><button data-type="Tous" class="on">Tous</button><button data-type="Revenu">Revenus</button><button data-type="Dépense">Dépenses</button><button data-type="Impôt">Impôts</button></div>
+<section id="home" class="screen on">
+  <div class="homeDesk">
+    <div class="left">
+      <article class="hero"><p>Reste disponible</p><strong id="remain">-</strong><span id="remainSub">-</span></article>
+      <div id="kpis" class="kpis"></div>
+      <div id="quickInsights" class="analysisGrid"></div>
     </div>
-    <div id="list" class="list"></div>
-  </section>
-  <section id="charts" class="screen">
-    <article class="box"><h2>Répartition mensuelle</h2><div id="chartBalance" class="chartWrap"></div></article>
-    <article class="box"><h2>Top dépenses</h2><div id="chartPosts" class="chartWrap"></div></article>
-    <article class="box"><h2>Charge par personne</h2><div id="chartPeople" class="chartWrap"></div></article>
-    <article class="box"><h2>Comptes à alimenter</h2><div id="chartAccounts" class="chartWrap"></div></article>
-  </section>
-  <section id="accounts" class="screen">
-    <article class="box"><h2>Comptes</h2><div id="accountsList" class="stack"></div></article>
-    <article class="box"><h2>Contribution</h2><div id="contrib" class="stack"></div></article>
-  </section>
-  <section id="more" class="screen">
-    <article class="box"><h2>Scénarios</h2><div class="grid2"><button id="dupSc">Dupliquer actif</button><button id="renSc">Renommer</button><button id="delSc" class="danger">Supprimer</button><button id="showFormulaLines">Voir formules</button></div></article>
-    <article class="box"><h2>Sauvegarde</h2><div class="grid2"><button id="save">Sauver local</button><button id="exportClear">Exporter clair</button><button id="exportCrypt">Exporter chiffré</button><button id="config">Modifier GitHub</button><button id="forget" class="danger">Effacer token local</button></div></article>
-    <article class="box"><h2>Version</h2><p class="help">Version active : V5 - graphiques dynamiques. Le bouton ↻ vide le cache et recharge l’app.</p></article>
-  </section>
+    <div class="right">
+      <article class="box"><div class="boxTitle"><h2>Scénario</h2><span id="saveState">Prêt</span></div><div class="row"><select id="scenario"></select><button id="newSc">Nouveau</button></div></article>
+      <article class="box"><h2>Synchronisation</h2><p class="help">Après modification sur un appareil : Pousser GitHub. Sur l’autre : Charger GitHub.</p><div class="grid2"><button id="push" class="primary">Pousser GitHub</button><button id="pull2">Charger GitHub</button></div></article>
+      <article class="box"><h2>Alertes</h2><div id="alerts" class="stack"></div></article>
+      <article class="box"><h2>Top postes</h2><div id="top" class="stack"></div></article>
+    </div>
+  </div>
+</section>
+<section id="lines" class="screen">
+  <div class="v7Lead"><div><h2>Lignes budgétaires</h2><p>Recherche, filtre et modifie les postes qui expliquent le budget.</p></div><span class="v7Pill" id="lineCount">0 ligne</span></div>
+  <div class="tools"><input id="q" placeholder="Rechercher salaire, LMNP, garde, voiture…"><div class="seg"><button data-owner="Tous" class="on">Tous</button><button data-owner="Commun">Commun</button><button data-owner="Laura">Laura</button><button data-owner="Romain">Romain</button></div><div class="seg"><button data-type="Tous" class="on">Tous</button><button data-type="Revenu">Revenus</button><button data-type="Dépense">Dépenses</button><button data-type="Impôt">Impôts</button></div></div>
+  <div id="list" class="list"></div>
+</section>
+<section id="charts" class="screen"><div class="v7Lead"><div><h2>Graphiques</h2><p>Lecture visuelle des masses mensuelles et des comptes à alimenter.</p></div><span class="v7Pill">Dynamique</span></div><div class="chartsGrid"><article class="box"><h2>Répartition mensuelle</h2><div id="chartBalance" class="chartWrap"></div></article><article class="box"><h2>Top dépenses</h2><div id="chartPosts" class="chartWrap"></div></article><article class="box"><h2>Charge par personne</h2><div id="chartPeople" class="chartWrap"></div></article><article class="box"><h2>Comptes à alimenter</h2><div id="chartAccounts" class="chartWrap"></div></article></div></section>
+<section id="analysis" class="screen"><div class="v7Lead"><div><h2>Analyse fine</h2><p>Équilibre Laura/Romain, points de vigilance et postes structurants.</p></div><span class="v7Pill">V7 iPad</span></div><div id="analysisPanels" class="panelGrid"></div></section>
+<section id="accounts" class="screen"><div class="v7Lead"><div><h2>Comptes</h2><p>Montants à verser par compte et contribution théorique.</p></div></div><div class="panelGrid"><article class="box"><h2>Comptes</h2><div id="accountsList" class="stack"></div></article><article class="box"><h2>Contribution</h2><div id="contrib" class="stack"></div></article></div></section>
+<section id="more" class="screen"><div class="panelGrid"><article class="box"><h2>Scénarios</h2><div class="grid2"><button id="dupSc">Dupliquer actif</button><button id="renSc">Renommer</button><button id="delSc" class="danger">Supprimer</button><button id="showFormulaLines">Voir formules</button></div></article><article class="box"><h2>Sauvegarde</h2><div class="grid2"><button id="save">Sauver local</button><button id="exportClear">Exporter clair</button><button id="exportCrypt">Exporter chiffré</button><button id="config">Modifier GitHub</button><button id="forget" class="danger">Effacer token local</button></div></article><article class="box"><h2>Version</h2><p class="help">Version active : V7 - analyse iPad. Le bouton ↻ vide le cache et recharge l’app.</p></article></div></section>
 </main>
-<nav>
-  <button data-go="home" class="on"><span class="navIcon">⌂</span><span class="navLabel">Accueil</span></button>
-  <button data-go="lines"><span class="navIcon">☰</span><span class="navLabel">Lignes</span></button>
-  <button data-go="charts"><span class="navIcon">◔</span><span class="navLabel">Graphes</span></button>
-  <button data-go="more"><span class="navIcon">⚙</span><span class="navLabel">Plus</span></button>
-</nav>
-<dialog id="edit">
-  <form method="dialog">
-    <div class="sheetTop"><h2 id="editTitle">Ligne</h2><button value="cancel" class="close">×</button></div>
-    <label>Libellé<textarea id="fLabel" rows="2"></textarea></label>
-    <label>Poste<input id="fPoste" list="postes"></label>
-    <div class="grid2"><label>Montant manuel<input id="fAmount" inputmode="decimal"></label><label>Fréquence<select id="fFreq"><option value="monthly">Mensuel</option><option value="annual">Annuel mensualisé</option><option value="oneoff">Ponctuel lissé sur 12 mois</option></select></label></div>
-    <label>Formule mensuelle<textarea id="fFormula" rows="3" placeholder='Ex : (brutAnnuel/12)*0.75'></textarea></label>
-    <label>Variables JSON<textarea id="fVars" rows="3" placeholder='{"brutAnnuel":52800}'></textarea></label>
-    <div id="formulaPreview" class="preview">Montant calculé : -</div>
-    <div class="grid2"><label>Type<select id="fType"><option>Revenu</option><option>Dépense</option><option>Impôt</option></select></label><label>Affectation<select id="fOwner"><option>Commun</option><option>Laura</option><option>Romain</option></select></label></div>
-    <label>Compte<input id="fAccount" list="accountsData"></label>
-    <label>Note<textarea id="fNote" rows="2"></textarea></label>
-    <label class="switch">Actif<input id="fEnabled" type="checkbox"></label>
-    <div class="grid2"><button type="button" id="del" class="danger">Supprimer</button><button type="button" id="copy">Copier</button></div>
-    <button type="button" id="ok" class="primary wide">Enregistrer</button>
-  </form>
-</dialog>
+<nav><button data-go="home" class="on"><span class="navIcon">⌂</span><span class="navLabel">Accueil</span></button><button data-go="lines"><span class="navIcon">☰</span><span class="navLabel">Lignes</span></button><button data-go="charts"><span class="navIcon">◔</span><span class="navLabel">Graphes</span></button><button data-go="analysis"><span class="navIcon">◎</span><span class="navLabel">Analyse</span></button><button data-go="more"><span class="navIcon">⚙</span><span class="navLabel">Plus</span></button></nav>
+<dialog id="edit"><form method="dialog"><div class="sheetTop"><h2 id="editTitle">Ligne</h2><button value="cancel" class="close">×</button></div><label>Libellé<textarea id="fLabel" rows="2"></textarea></label><label>Poste<input id="fPoste" list="postes"></label><div class="grid2"><label>Montant manuel<input id="fAmount" inputmode="decimal"></label><label>Fréquence<select id="fFreq"><option value="monthly">Mensuel</option><option value="annual">Annuel mensualisé</option><option value="oneoff">Ponctuel lissé sur 12 mois</option></select></label></div><label>Formule mensuelle<textarea id="fFormula" rows="3" placeholder='Ex : (brutAnnuel/12)*0.75'></textarea></label><label>Variables JSON<textarea id="fVars" rows="3" placeholder='{"brutAnnuel":52800}'></textarea></label><div id="formulaPreview" class="preview">Montant calculé : -</div><div class="grid2"><label>Type<select id="fType"><option>Revenu</option><option>Dépense</option><option>Impôt</option></select></label><label>Affectation<select id="fOwner"><option>Commun</option><option>Laura</option><option>Romain</option></select></label></div><label>Compte<input id="fAccount" list="accountsData"></label><label>Note<textarea id="fNote" rows="2"></textarea></label><label class="switch">Actif<input id="fEnabled" type="checkbox"></label><div class="grid2"><button type="button" id="del" class="danger">Supprimer</button><button type="button" id="copy">Copier</button></div><button type="button" id="ok" class="primary wide">Enregistrer</button></form></dialog>
 <datalist id="postes"></datalist><datalist id="accountsData"></datalist>
-<script src="data.js"></script>
-<script src="app.js"></script>
+<script src="data.js"></script><script src="app.js"></script>
 <script>
 (function(){
-  function money(v){return (Number(v)||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0})}
-  function safe(s){return String(s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
-  function bars(data){var m=Math.max(1,...data.map(function(x){return x.v})),h=34*data.length+10;return '<svg viewBox="0 0 360 '+h+'">'+data.map(function(d,i){var y=10+i*34,w=d.v/m*180;return '<text x="0" y="'+(y+15)+'" font-size="11" fill="#475467">'+safe(d.k.slice(0,24))+'</text><rect x="140" y="'+y+'" rx="8" width="'+w+'" height="16" fill="#2563eb"></rect><text x="'+(145+w)+'" y="'+(y+13)+'" font-size="11">'+money(d.v)+'</text>'}).join('')+'</svg>'}
-  function donut(data){var colors=['#2563eb','#38bdf8','#10b981','#f59e0b','#ef4444'],tot=data.reduce(function(s,x){return s+x.v},0)||1,start=-90,parts='';data.forEach(function(d,i){var a=d.v/tot*360,end=start+a,l=a>180?1:0,r=68,cx=90,cy=90,sx=cx+r*Math.cos(Math.PI*start/180),sy=cy+r*Math.sin(Math.PI*start/180),ex=cx+r*Math.cos(Math.PI*end/180),ey=cy+r*Math.sin(Math.PI*end/180);parts+='<path d="M '+cx+' '+cy+' L '+sx+' '+sy+' A '+r+' '+r+' 0 '+l+' 1 '+ex+' '+ey+' Z" fill="'+colors[i%colors.length]+'"></path>';start=end});return '<svg viewBox="0 0 180 180">'+parts+'<circle cx="90" cy="90" r="36" fill="#fff"></circle><text x="90" y="96" text-anchor="middle" font-size="14" font-weight="900">'+money(tot)+'</text></svg>'}
-  window.renderCharts=function(){try{var c=calc();document.getElementById('chartBalance').innerHTML=donut([{k:'Laura',v:Math.max(0,c.ref.Laura)},{k:'Romain',v:Math.max(0,c.ref.Romain)},{k:'Commun',v:Math.max(0,c.needT)}]);document.getElementById('chartPosts').innerHTML=bars(Object.entries(c.post).map(function(x){return {k:x[0],v:x[1]}}).sort(function(a,b){return b.v-a.v}).slice(0,7));document.getElementById('chartPeople').innerHTML=donut([{k:'Laura',v:c.out.Laura},{k:'Romain',v:c.out.Romain}]);document.getElementById('chartAccounts').innerHTML=bars(Object.entries(c.need).filter(function(x){return x[1]>0}).map(function(x){return {k:x[0],v:x[1]}}).sort(function(a,b){return b.v-a.v}).slice(0,6))}catch(e){}}
-  var oldRender=window.render;if(oldRender){window.render=function(){oldRender();setTimeout(window.renderCharts,0)}}
-  document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});document.getElementById(b.dataset.go).classList.add('on');document.getElementById('title').textContent={home:'Synthèse',lines:'Lignes',charts:'Graphiques',more:'Plus'}[b.dataset.go]||'Budget';if(b.dataset.go==='charts')window.renderCharts()}})
-  document.getElementById('refreshApp').onclick=async function(){if('caches' in window){var ks=await caches.keys();await Promise.all(ks.map(function(k){return caches.delete(k)}))}location.href=location.pathname+'?v=v5-'+Date.now()}
+function euro(v,d){return(Number(v)||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:d??0})}
+function safe(s){return String(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function cls(v){return v<0?'bad':v<800?'warn':'good'}
+function ins(t,v,s,c){return '<article class="insight '+(c||'')+'"><small>'+safe(t)+'</small><strong>'+safe(v)+'</strong><span>'+safe(s||'')+'</span></article>'}
+function bars(data){var m=Math.max(1,...data.map(x=>x.v)),h=34*data.length+10;return '<svg viewBox="0 0 360 '+h+'">'+data.map(function(d,i){var y=10+i*34,w=d.v/m*180;return '<text x="0" y="'+(y+15)+'" font-size="11" fill="#475467">'+safe(d.k.slice(0,24))+'</text><rect x="140" y="'+y+'" rx="8" width="'+w+'" height="16" fill="#2563eb"></rect><text x="'+(145+w)+'" y="'+(y+13)+'" font-size="11">'+euro(d.v)+'</text>'}).join('')+'</svg>'}
+function donut(data){var colors=['#2563eb','#38bdf8','#10b981','#f59e0b','#ef4444'],tot=data.reduce((s,x)=>s+x.v,0)||1,start=-90,parts='';data.forEach(function(d,i){var a=d.v/tot*360,end=start+a,l=a>180?1:0,r=68,cx=90,cy=90,sx=cx+r*Math.cos(Math.PI*start/180),sy=cy+r*Math.sin(Math.PI*start/180),ex=cx+r*Math.cos(Math.PI*end/180),ey=cy+r*Math.sin(Math.PI*end/180);parts+='<path d="M '+cx+' '+cy+' L '+sx+' '+sy+' A '+r+' '+r+' 0 '+l+' 1 '+ex+' '+ey+' Z" fill="'+colors[i%colors.length]+'"></path>';start=end});return '<svg viewBox="0 0 180 180">'+parts+'<circle cx="90" cy="90" r="36" fill="#fff"></circle><text x="90" y="96" text-anchor="middle" font-size="14" font-weight="900">'+euro(tot)+'</text></svg>'}
+window.renderCharts=function(){try{var c=calc();document.getElementById('chartBalance').innerHTML=donut([{k:'Laura',v:Math.max(0,c.ref.Laura)},{k:'Romain',v:Math.max(0,c.ref.Romain)},{k:'Commun',v:Math.max(0,c.needT)}]);document.getElementById('chartPosts').innerHTML=bars(Object.entries(c.post).map(x=>({k:x[0],v:x[1]})).sort((a,b)=>b.v-a.v).slice(0,7));document.getElementById('chartPeople').innerHTML=donut([{k:'Laura',v:c.out.Laura},{k:'Romain',v:c.out.Romain}]);document.getElementById('chartAccounts').innerHTML=bars(Object.entries(c.need).filter(x=>x[1]>0).map(x=>({k:x[0],v:x[1]})).sort((a,b)=>b.v-a.v).slice(0,6))}catch(e){}}
+window.renderAnalysis=function(){try{var c=calc(),rs=rows(),rem=c.remain.Laura+c.remain.Romain,gap=Math.abs(c.remain.Laura-c.remain.Romain),top=Object.entries(c.post).sort((a,b)=>b[1]-a[1])[0]||['-',0],form=rs.filter(r=>r.formula).length,err=rs.filter(r=>r.formulaError).length,children=rs.filter(r=>/charlie|rachel|garde|mam|couches|enfants/i.test((r.label||'')+' '+(r.poste||''))).reduce((s,r)=>s+val(r),0),lmnp=rs.filter(r=>/lmnp|pno|copro|expert comptable/i.test((r.label||'')+' '+(r.account||''))).reduce((s,r)=>s+(r.type==='Revenu'?-val(r):val(r)),0);document.getElementById('lineCount').textContent=rs.length+' lignes';document.getElementById('quickInsights').innerHTML=ins('Disponibilité',euro(rem),rem<0?'Budget mensuel négatif':'Après contributions et dépenses',cls(rem))+ins('Écart Laura / Romain',euro(gap),gap>250?'Écart à contrôler':'Équilibre correct',gap>250?'warn':'good')+ins('Premier poste',top[0],euro(top[1])+' / mois','')+ins('Formules',form+' lignes',err?err+' erreur à corriger':'Aucune erreur détectée',err?'bad':'good');document.getElementById('analysisPanels').innerHTML='<article class="box"><h2>Équilibre du couple</h2><div class="metricRows"><div class="metric"><b>Part Laura</b><em>'+((c.rat.Laura||0)*100).toFixed(1)+' %</em></div><div class="metric"><b>Part Romain</b><em>'+((c.rat.Romain||0)*100).toFixed(1)+' %</em></div><div class="metric"><b>Reste Laura</b><em>'+euro(c.remain.Laura)+'</em></div><div class="metric"><b>Reste Romain</b><em>'+euro(c.remain.Romain)+'</em></div></div></article><article class="box"><h2>Postes structurants</h2><div class="metricRows"><div class="metric"><b>1er poste</b><em>'+safe(top[0])+'</em></div><div class="metric"><b>Coût enfants</b><em>'+euro(children)+'</em></div><div class="metric"><b>Effort LMNP net</b><em>'+euro(lmnp)+'</em></div><div class="metric"><b>Commun à alimenter</b><em>'+euro(c.needT)+'</em></div></div></article><article class="box"><h2>Points de vigilance</h2><div class="metricRows"><div class="metric"><b>Disponibilité</b><em>'+euro(rem)+'</em></div><div class="metric"><b>Écart d’équité</b><em>'+euro(gap)+'</em></div><div class="metric"><b>Formules</b><em>'+form+'</em></div><div class="metric"><b>Erreurs formule</b><em>'+err+'</em></div></div></article>'}catch(e){}}
+var base=window.render;if(base){window.render=function(){base();setTimeout(function(){renderCharts();renderAnalysis()},0)}}
+document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(b.dataset.go).classList.add('on');document.getElementById('title').textContent={home:'Synthèse',lines:'Lignes',charts:'Graphiques',analysis:'Analyse',more:'Plus'}[b.dataset.go]||'Budget';renderCharts();renderAnalysis()}});
+document.getElementById('refreshApp').onclick=async function(){if('caches'in window){var ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)))}location.href=location.pathname+'?v=v7-'+Date.now()};
 })();
 </script>
-</body>
-</html>
+</body></html>
