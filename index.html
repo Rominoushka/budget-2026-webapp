@@ -7,6 +7,7 @@
 <meta name="theme-color" content="#101828">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="v9.css?v=9">
 </head>
 <body>
 <section id="lock" class="lock">
@@ -22,7 +23,7 @@
       <div class="grid2"><label>Owner<input id="owner" value="Rominoushka"></label><label>Repository<input id="repo" value="budget-2026-webapp"></label></div>
       <div class="grid2"><label>Branch<input id="branch" value="main"></label><label>Fichier<input id="path" value="data/vault.json"></label></div>
     </details>
-    <p id="msg" class="msg"></p><p class="versionTag">V8 - pilotage et formules dynamiques</p>
+    <p id="msg" class="msg"></p><p class="versionTag">V9 - cockpit budget premium</p>
   </div>
 </section>
 <header>
@@ -35,7 +36,6 @@
       <div class="left">
         <article class="hero"><p>Reste disponible</p><strong id="remain">-</strong><span id="remainSub">-</span></article>
         <div id="kpis" class="kpis"></div>
-        <div id="quickInsights" class="v8Grid"></div>
       </div>
       <div class="right">
         <article class="box"><div class="boxTitle"><h2>Scénario</h2><span id="saveState">Prêt</span></div><div class="row"><select id="scenario"></select><button id="newSc">Nouveau</button></div></article>
@@ -46,21 +46,19 @@
     </div>
   </section>
   <section id="lines" class="screen">
-    <div class="v8Lead"><div><h2>Lignes budgétaires</h2><p>Recherche, filtre et modifie les postes qui expliquent le budget.</p></div><span class="v8Pill" id="lineCount">0 ligne</span></div>
+    <div class="v9SectionTitle"><div><h2>Lignes budgétaires</h2><p>Regroupées par poste, avec filtres rapides.</p></div><span class="v9Chip" id="lineCount">0 ligne</span></div>
     <div class="tools"><input id="q" placeholder="Rechercher salaire, LMNP, garde, voiture…"><div class="seg"><button data-owner="Tous" class="on">Tous</button><button data-owner="Commun">Commun</button><button data-owner="Laura">Laura</button><button data-owner="Romain">Romain</button></div><div class="seg"><button data-type="Tous" class="on">Tous</button><button data-type="Revenu">Revenus</button><button data-type="Dépense">Dépenses</button><button data-type="Impôt">Impôts</button></div></div>
     <div id="list" class="list"></div>
   </section>
   <section id="accounts" class="screen"><div id="accountsList" class="stack"></div><div id="contrib" class="stack"></div></section>
-  <section id="charts" class="screen"><div class="v8Lead"><div><h2>Graphiques cliquables</h2><p>Touche un poste ou un compte pour ouvrir les lignes concernées.</p></div><span class="v8Pill">Dynamique</span></div><div class="chartsGrid"><article class="box"><h2>Top dépenses</h2><div id="chartPosts" class="chartWrap"></div></article><article class="box"><h2>Comptes à alimenter</h2><div id="chartAccounts" class="chartWrap"></div></article><article class="box"><h2>Répartition mensuelle</h2><div id="chartBalance" class="chartWrap"></div></article><article class="box"><h2>Charge par personne</h2><div id="chartPeople" class="chartWrap"></div></article></div></section>
-  <section id="analysis" class="screen"><div class="v8Lead"><div><h2>Analyse fine</h2><p>Équité Laura/Romain, projection annuelle et comparaison de scénarios.</p></div><span class="v8Pill">V8</span></div><div id="analysisPanels" class="v8PanelGrid"></div></section>
-  <section id="formulas" class="screen"><div class="v8Lead"><div><h2>Formules dynamiques</h2><p>Modifier une formule, ajuster les variables et voir l’impact immédiatement.</p></div><span class="v8Pill">Audit</span></div><div id="formulaAudit" class="v8FormulaGrid"></div></section>
-  <section id="more" class="screen"><div class="v8PanelGrid"><article class="box"><h2>Scénarios</h2><div class="grid2"><button id="dupSc">Dupliquer actif</button><button id="renSc">Renommer</button><button id="delSc" class="danger">Supprimer</button><button id="showFormulaLines">Voir formules</button></div></article><article class="box"><h2>Sauvegarde</h2><div class="grid2"><button id="save">Sauver local</button><button id="exportClear">Exporter clair</button><button id="exportCrypt">Exporter chiffré</button><button id="config">Modifier GitHub</button><button id="forget" class="danger">Effacer token local</button></div></article><article class="box"><h2>Version</h2><p class="help">Version active : V8 - pilotage, analyse, comptes et formules dynamiques.</p></article></div></section>
+  <section id="analysis" class="screen"><div class="v9SectionTitle"><div><h2>Analyse fine</h2><p>Équité Laura/Romain, projection annuelle et formules.</p></div><span class="v9Chip">V9</span></div><div id="analysisPanels" class="v9PanelGrid"></div></section>
+  <section id="more" class="screen"><div class="v9PanelGrid"><article class="box"><h2>Scénarios</h2><div class="grid2"><button id="dupSc">Dupliquer actif</button><button id="renSc">Renommer</button><button id="delSc" class="danger">Supprimer</button><button id="showFormulaLines">Voir formules</button></div></article><article class="box"><h2>Sauvegarde</h2><div class="grid2"><button id="save">Sauver local</button><button id="exportClear">Exporter clair</button><button id="exportCrypt">Exporter chiffré</button><button id="config">Modifier GitHub</button><button id="forget" class="danger">Effacer token local</button></div></article><article class="box"><h2>Version</h2><p class="help">Version active : V9 - design Finary / Bankin, lignes groupées, analyse et formules dynamiques.</p></article></div></section>
 </main>
-<nav><button data-go="home" class="on"><span class="navIcon">⌂</span><span class="navLabel">Accueil</span></button><button data-go="lines"><span class="navIcon">☰</span><span class="navLabel">Lignes</span></button><button data-go="accounts"><span class="navIcon">⇄</span><span class="navLabel">Comptes</span></button><button data-go="analysis"><span class="navIcon">◎</span><span class="navLabel">Analyse</span></button><button data-go="formulas"><span class="navIcon">ƒ</span><span class="navLabel">Formules</span></button><button data-go="more"><span class="navIcon">⚙</span><span class="navLabel">Plus</span></button></nav>
+<nav><button data-go="home" class="on"><span class="navIcon">⌂</span><span class="navLabel">Accueil</span></button><button data-go="lines"><span class="navIcon">☰</span><span class="navLabel">Lignes</span></button><button data-go="accounts"><span class="navIcon">⇄</span><span class="navLabel">Comptes</span></button><button data-go="analysis"><span class="navIcon">◎</span><span class="navLabel">Analyse</span></button><button data-go="more"><span class="navIcon">•••</span><span class="navLabel">Plus</span></button></nav>
 <dialog id="edit"><form method="dialog"><div class="sheetTop"><h2 id="editTitle">Ligne</h2><button value="cancel" class="close">×</button></div><label>Libellé<textarea id="fLabel" rows="2"></textarea></label><label>Poste<input id="fPoste" list="postes"></label><div class="grid2"><label>Montant manuel<input id="fAmount" inputmode="decimal"></label><label>Fréquence<select id="fFreq"><option value="monthly">Mensuel</option><option value="annual">Annuel mensualisé</option><option value="oneoff">Ponctuel lissé sur 12 mois</option></select></label></div><label>Formule mensuelle<textarea id="fFormula" rows="3" placeholder="Ex : (brutAnnuel/12)*0.75"></textarea></label><label>Variables JSON<textarea id="fVars" rows="3" placeholder='{"brutAnnuel":52800}'></textarea></label><div id="formulaPreview" class="preview">Montant calculé : -</div><div class="grid2"><label>Type<select id="fType"><option>Revenu</option><option>Dépense</option><option>Impôt</option></select></label><label>Affectation<select id="fOwner"><option>Commun</option><option>Laura</option><option>Romain</option></select></label></div><label>Compte<input id="fAccount" list="accountsData"></label><label>Note<textarea id="fNote" rows="2"></textarea></label><label class="switch">Actif<input id="fEnabled" type="checkbox"></label><div class="grid2"><button type="button" id="del" class="danger">Supprimer</button><button type="button" id="copy">Copier</button></div><button type="button" id="ok" class="primary wide">Enregistrer</button></form></dialog>
 <datalist id="postes"></datalist><datalist id="accountsData"></datalist>
 <script src="data.js"></script>
 <script src="app.js"></script>
-<script src="v8.js?v=8"></script>
+<script src="v9.js?v=9"></script>
 </body>
 </html>
