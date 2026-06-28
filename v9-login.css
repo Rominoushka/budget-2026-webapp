@@ -1,0 +1,33 @@
+/* V9 Login Premium */
+body.v9 .lock{background:
+  radial-gradient(circle at 86% 9%,rgba(49,94,251,.92) 0,rgba(49,94,251,.34) 28%,transparent 46%),
+  radial-gradient(circle at 8% 18%,rgba(90,168,255,.42) 0,transparent 34%),
+  linear-gradient(160deg,#030712 0,#0b1226 48%,#111827 100%)!important;
+  align-items:start!important;place-items:start center!important;padding:calc(46px + env(safe-area-inset-top)) 18px calc(108px + env(safe-area-inset-bottom))!important}
+body.v9 .lock:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0) 38%),radial-gradient(circle at 50% 100%,rgba(255,255,255,.08),transparent 38%);pointer-events:none}
+body.v9 .lockCard{width:min(520px,100%)!important;border-radius:34px!important;padding:22px!important;background:rgba(255,255,255,.96)!important;box-shadow:0 34px 90px rgba(0,0,0,.36)!important;border:1px solid rgba(255,255,255,.72);backdrop-filter:blur(22px)}
+body.v9 .brandRow{display:grid!important;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:center;margin-bottom:18px}
+body.v9 .brandLogo{width:64px!important;height:64px!important;border-radius:24px!important;background:linear-gradient(145deg,#315efb,#5aa8ff 72%,#67e8f9)!important;box-shadow:0 16px 34px rgba(49,94,251,.28),inset 0 1px 0 rgba(255,255,255,.45)}
+body.v9 .eyebrow{font-size:11px!important;letter-spacing:.14em!important;color:#315efb!important;margin:0 0 4px!important;font-weight:950!important}
+body.v9 .lockCard h1{font-size:42px!important;line-height:.94!important;letter-spacing:-.07em!important;margin:0!important;color:#0f172a!important}
+body.v9 .lockCard .help{font-size:15px!important;line-height:1.42!important;color:#667085!important;margin:0 0 22px!important;max-width:440px}
+body.v9 .lockCard label{font-size:11px!important;letter-spacing:.11em!important;color:#475467!important;font-weight:950!important;margin-top:10px!important}
+body.v9 .lockCard input{min-height:58px!important;border-radius:22px!important;border:1px solid #dfe5ee!important;background:#fff!important;font-size:18px!important;font-weight:850!important;box-shadow:inset 0 1px 2px rgba(15,23,42,.03)}
+body.v9 .lockCard input::placeholder{color:#a4a9b3;font-weight:850}
+body.v9 .lockCard button{min-height:58px!important;border-radius:22px!important;font-size:17px!important;font-weight:950!important;box-shadow:none!important}
+body.v9 .lockCard .primary{background:linear-gradient(135deg,#315efb,#1d4ed8)!important;color:#fff!important;box-shadow:0 18px 30px rgba(49,94,251,.26)!important}
+body.v9 .lockCard .grid2{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;margin-top:10px!important}
+body.v9 #openLocal,body.v9 #pull,body.v9 #create{background:#f1f5f9!important;color:#0f172a!important;border:1px solid #e6eaf0!important}
+body.v9 #create{width:100%;margin-top:10px;background:#eef4ff!important;color:#315efb!important}
+body.v9 .lockCard details{margin-top:16px!important;border:1px solid #e6eaf0!important;border-radius:24px!important;background:#fff!important;padding:0!important;overflow:hidden}
+body.v9 .lockCard summary{min-height:58px;display:flex!important;align-items:center;gap:10px;padding:0 18px!important;font-size:17px!important;color:#0f172a!important;font-weight:950!important;list-style:none}
+body.v9 .lockCard summary::-webkit-details-marker{display:none}
+body.v9 .lockCard summary:before{content:"›";display:grid;place-items:center;width:22px;height:22px;border-radius:999px;background:#eef4ff;color:#315efb;font-size:18px;transition:transform .18s ease}
+body.v9 .lockCard details[open] summary:before{transform:rotate(90deg)}
+body.v9 .lockCard details[open]{padding-bottom:14px!important}
+body.v9 .lockCard details label,body.v9 .lockCard details .grid2{margin-left:14px!important;margin-right:14px!important}
+body.v9 .msg{margin:8px 0 0!important;font-size:13px!important;min-height:18px!important;color:#b42318!important}
+body.v9 .versionTag{margin:24px 0 0!important;color:#667085!important;font-size:13px!important}
+body.v9 .lockCard:after{content:"Synchronisation chiffrée · local + GitHub";display:flex;align-items:center;justify-content:center;margin-top:14px;border-radius:999px;padding:9px 12px;background:#f8fafc;color:#667085;font-size:12px;font-weight:850;border:1px solid #edf0f5}
+@media(max-width:430px){body.v9 .lock{padding-left:16px!important;padding-right:16px!important;padding-top:calc(34px + env(safe-area-inset-top))!important}body.v9 .lockCard{padding:18px!important;border-radius:30px!important}body.v9 .brandRow{grid-template-columns:54px minmax(0,1fr);gap:14px;margin-bottom:16px}body.v9 .brandLogo{width:54px!important;height:54px!important;border-radius:21px!important}body.v9 .lockCard h1{font-size:36px!important}body.v9 .lockCard .help{font-size:14px!important;margin-bottom:18px!important}body.v9 .lockCard .grid2{grid-template-columns:1fr!important}body.v9 .lockCard button,body.v9 .lockCard input{min-height:56px!important}}
+@media(min-width:760px){body.v9 .lock{place-items:center!important;padding-top:calc(40px + env(safe-area-inset-top))!important}body.v9 .lockCard{padding:28px!important}.lockCard h1{font-size:46px!important}}
