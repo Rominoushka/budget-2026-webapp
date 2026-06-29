@@ -1,0 +1,31 @@
+/* V12 full dark override: popups, dialogs, forms, menus */
+html,body{background:#03060d!important;color:#f8fafc!important;color-scheme:dark!important}
+body.v12product *{box-sizing:border-box}
+body.v12product dialog,body.v12product dialog[open],body.v12product #edit{background:transparent!important;border:0!important;color:#f8fafc!important;padding:0!important;box-shadow:none!important;max-width:none!important;width:100%!important;margin:auto 0 0!important}
+body.v12product dialog::backdrop{background:rgba(0,0,0,.72)!important;backdrop-filter:blur(16px)!important}
+body.v12product dialog form,body.v12product #edit form{background:linear-gradient(180deg,#111827,#05070b)!important;color:#f8fafc!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:32px 32px 0 0!important;box-shadow:0 -34px 90px rgba(0,0,0,.62)!important;padding:18px!important;max-height:92vh!important;overflow:auto!important}
+body.v12product .sheetTop{background:transparent!important;border:0!important;color:#fff!important;position:sticky!important;top:0!important;z-index:5!important;padding-bottom:10px!important;backdrop-filter:blur(18px)!important}
+body.v12product .sheetTop h2,body.v12product #editTitle{color:#fff!important;font-size:28px!important;letter-spacing:-.06em!important}
+body.v12product .close,body.v12product button.close{background:rgba(255,255,255,.08)!important;color:#fff!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:999px!important}
+body.v12product label{color:#8b98ad!important;font-weight:900!important}
+body.v12product input,body.v12product textarea,body.v12product select,body.v12product option{background:#070b14!important;color:#f8fafc!important;border:1px solid rgba(255,255,255,.10)!important;box-shadow:none!important;caret-color:#7db7ff!important}
+body.v12product input,body.v12product textarea,body.v12product select{border-radius:16px!important;min-height:48px!important;padding:12px!important}
+body.v12product textarea{line-height:1.35!important}
+body.v12product input::placeholder,body.v12product textarea::placeholder{color:#64748b!important}
+body.v12product input:focus,body.v12product textarea:focus,body.v12product select:focus{outline:none!important;border-color:#5b7cff!important;box-shadow:0 0 0 4px rgba(91,124,255,.18)!important}
+body.v12product datalist,body.v12product select option{background:#0b1220!important;color:#fff!important}
+body.v12product .preview,body.v12product #formulaPreview{background:#0b1220!important;color:#d1fae5!important;border:1px solid rgba(34,211,166,.18)!important;border-radius:18px!important}
+body.v12product details{background:#0b1220!important;color:#f8fafc!important;border:1px solid rgba(255,255,255,.09)!important;border-radius:20px!important}
+body.v12product summary{color:#f0c27b!important;background:transparent!important}
+body.v12product .box,body.v12product .card,body.v12product .modal,body.v12product .sheet,body.v12product .panel,body.v12product .stack>*{background:linear-gradient(180deg,#101827,#0b1220)!important;color:#f8fafc!important;border-color:rgba(255,255,255,.08)!important}
+body.v12product .msg,body.v12product .error{background:rgba(255,107,107,.10)!important;color:#fecaca!important;border-color:rgba(255,107,107,.20)!important}
+body.v12product button{background:#111827!important;color:#f8fafc!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:none!important}
+body.v12product button.primary,body.v12product .primary,body.v12product #ok{background:linear-gradient(135deg,#315efb,#5b7cff)!important;color:#fff!important;border:0!important;box-shadow:0 16px 38px rgba(49,94,251,.25)!important}
+body.v12product button.danger,body.v12product .danger,#del{background:rgba(255,107,107,.12)!important;color:#fecaca!important;border:1px solid rgba(255,107,107,.22)!important}
+body.v12product #copy{background:rgba(255,255,255,.06)!important;color:#dbeafe!important}
+body.v12product .switch{background:#0b1220!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:18px!important;padding:12px!important;color:#fff!important}
+body.v12product input[type="checkbox"]{accent-color:#5b7cff!important;width:22px!important;height:22px!important;min-height:auto!important}
+body.v12product .grid2{gap:10px!important}
+body.v12product #create,body.v12product #lock details{display:none!important}
+body.v12product .lockCard:after{background:#0b1220!important;color:#8b98ad!important;border-color:rgba(255,255,255,.08)!important}
+@media(min-width:760px){body.v12product dialog,body.v12product #edit{width:min(720px,calc(100vw - 32px))!important;margin:auto!important}body.v12product dialog form,body.v12product #edit form{border-radius:34px!important;max-height:88vh!important}}
