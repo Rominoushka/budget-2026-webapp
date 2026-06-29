@@ -11,6 +11,7 @@ body.v12product .v13SegBtn.on{background:linear-gradient(135deg,#315efb,#5b7cff)
 body.v12product .v13Switch{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:#0b1220;padding:12px;color:#fff}
 body.v12product .v13Switch span{display:block;color:#8b98ad;font-size:12px;margin-top:2px}
 body.v12product .v13Switch input{width:24px!important;height:24px!important;min-height:auto!important;accent-color:#5b7cff!important}
+body.v12product .v13MonthField.v13Hidden,body.v12product .v13Switch.v13Hidden{display:none!important}
 body.v12product .v13Preview{grid-column:1/-1;display:grid;gap:8px;margin-top:4px}
 body.v12product .v13PreviewRow{display:flex;justify-content:space-between;gap:10px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:#0b1220;padding:11px;color:#cbd5e1}
 body.v12product .v13PreviewRow strong{color:#fff}
