@@ -1,4 +1,4 @@
-const CACHE_NAME='budget-2026-v12-ui-mobile-fix';
+const CACHE_NAME='budget-2026-v12-ui-fix-final';
 const ASSETS=['./','./index.html','./app.css','./v9.css','./v9-login.css','./v10-dark.css','./v12-product.css','./v12-full-dark.css','./app.js','./data.js','./v9.js','./v12-product.js','./manifest.webmanifest'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k)))));self.clients.claim()});
